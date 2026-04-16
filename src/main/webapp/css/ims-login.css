@@ -1,0 +1,299 @@
+/* ============================================================
+   IMS — Login Page Stylesheet
+   Usage: <link rel="stylesheet" href="/spendilizer/css/ims-login.css">
+   Standalone — does NOT depend on ims-shared.css
+   ============================================================ */
+
+/* ── 1. Variables ──────────────────────────────────────────── */
+:root {
+    --color-primary:    #0f766e;
+    --color-primary-lt: #ccfbf1;
+    --color-primary-dk: #115e59;
+    --color-accent:     #5eead4;
+    --color-danger:     #dc2626;
+    --color-danger-lt:  #fee2e2;
+    --color-bg:         #f0fdfa;
+    --color-surface:    #ffffff;
+    --color-border:     #dde3ed;
+    --color-text:       #0f172a;
+    --color-text-muted: #64748b;
+}
+
+/* ── 2. Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── 3. Body — full-height split layout ────────────────────── */
+body {
+    min-height:  100vh;
+    display:     flex;
+    background:  var(--color-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color:       var(--color-text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── 4. Left Brand Panel ───────────────────────────────────── */
+.left-panel {
+    width:           46%;
+    background:      var(--color-primary);
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+    align-items:     center;
+    padding:         60px 48px;
+    position:        relative;
+    overflow:        hidden;
+}
+
+/* Decorative circles */
+.left-panel::before {
+    content:       '';
+    position:      absolute;
+    width:         420px;
+    height:        420px;
+    border-radius: 50%;
+    border:        60px solid rgba(255,255,255,0.06);
+    top:           -120px;
+    right:         -120px;
+    pointer-events: none;
+}
+.left-panel::after {
+    content:       '';
+    position:      absolute;
+    width:         260px;
+    height:        260px;
+    border-radius: 50%;
+    border:        40px solid rgba(255,255,255,0.06);
+    bottom:        -80px;
+    left:          -60px;
+    pointer-events: none;
+}
+
+.brand-logo {
+    width:           52px;
+    height:          52px;
+    background:      rgba(255,255,255,0.15);
+    border-radius:   14px;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    margin-bottom:   20px;
+}
+
+.brand-name {
+    font-size:     2rem;
+    font-weight:   800;
+    color:         #fff;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+}
+
+.brand-tagline {
+    font-size:   0.92rem;
+    color:       rgba(255,255,255,0.7);
+    text-align:  center;
+    max-width:   280px;
+    line-height: 1.6;
+}
+
+.brand-features {
+    margin-top:     40px;
+    display:        flex;
+    flex-direction: column;
+    gap:            14px;
+    width:          100%;
+    max-width:      300px;
+}
+
+.brand-feature {
+    display:     flex;
+    align-items: center;
+    gap:         12px;
+    font-size:   0.83rem;
+    color:       rgba(255,255,255,0.8);
+}
+
+.brand-feature-dot {
+    width:           28px;
+    height:          28px;
+    border-radius:   8px;
+    background:      rgba(255,255,255,0.15);
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    flex-shrink:     0;
+}
+
+/* ── 5. Right Login Panel ──────────────────────────────────── */
+.right-panel {
+    flex:            1;
+    display:         flex;
+    justify-content: center;
+    align-items:     center;
+    padding:         48px 36px;
+}
+
+.login-box {
+    width:     100%;
+    max-width: 400px;
+}
+
+.login-heading {
+    font-size:     1.45rem;
+    font-weight:   700;
+    color:         var(--color-text);
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+}
+
+.login-sub {
+    font-size:     0.83rem;
+    color:         var(--color-text-muted);
+    margin-bottom: 32px;
+}
+
+/* ── 6. Flash Messages ─────────────────────────────────────── */
+.flash-success {
+    background:    #dcfce7;
+    border:        1px solid #bbf7d0;
+    border-radius: 10px;
+    padding:       12px 16px;
+    font-size:     0.82rem;
+    color:         #16a34a;
+    display:       flex;
+    align-items:   center;
+    gap:           10px;
+    margin-bottom: 24px;
+}
+
+.flash-error {
+    background:    var(--color-danger-lt);
+    border:        1px solid #fecaca;
+    border-radius: 10px;
+    padding:       12px 16px;
+    font-size:     0.82rem;
+    color:         var(--color-danger);
+    display:       flex;
+    align-items:   center;
+    gap:           10px;
+    margin-bottom: 24px;
+}
+
+/* ── 7. Form Fields ────────────────────────────────────────── */
+.form-group            { margin-bottom: 18px; }
+.form-group label {
+    display:       block;
+    font-size:     0.82rem;
+    font-weight:   600;
+    color:         var(--color-text);
+    margin-bottom: 7px;
+}
+
+/* Input with leading icon + optional trailing button */
+.input-wrap            { position: relative; }
+.input-wrap .input-icon {
+    position:       absolute;
+    left:           12px;
+    top:            50%;
+    transform:      translateY(-50%);
+    color:          var(--color-text-muted);
+    pointer-events: none;
+}
+.input-wrap input {
+    width:         100%;
+    padding:       10px 40px 10px 38px;   /* right pad leaves room for toggle btn */
+    border:        1px solid var(--color-border);
+    border-radius: 8px;
+    font-size:     0.86rem;
+    font-family:   inherit;
+    color:         var(--color-text);
+    background:    var(--color-surface);
+    outline:       none;
+    transition:    border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.input-wrap input:focus {
+    border-color: var(--color-primary);
+    box-shadow:   0 0 0 3px rgba(15,118,110,0.12);
+}
+.input-wrap input::placeholder { color: #b0bec5; }
+
+/* Password visibility toggle */
+.toggle-pw {
+    position:    absolute;
+    right:       12px;
+    top:         50%;
+    transform:   translateY(-50%);
+    background:  none;
+    border:      none;
+    cursor:      pointer;
+    color:       var(--color-text-muted);
+    padding:     2px;
+    display:     flex;
+    align-items: center;
+    transition:  color 0.15s;
+}
+.toggle-pw:hover { color: var(--color-text); }
+
+/* ── 8. Remember Me Row ────────────────────────────────────── */
+.extras-row {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    margin-bottom:   24px;
+    margin-top:      4px;
+}
+
+.remember-label {
+    display:     flex;
+    align-items: center;
+    gap:         8px;
+    font-size:   0.82rem;
+    color:       var(--color-text-muted);
+    cursor:      pointer;
+    user-select: none;
+}
+.remember-label input[type="checkbox"] {
+    accent-color: var(--color-primary);
+    width:        15px;
+    height:       15px;
+    cursor:       pointer;
+}
+
+/* ── 9. Submit Button ──────────────────────────────────────── */
+.btn-login {
+    width:           100%;
+    padding:         11px;
+    background:      var(--color-primary);
+    color:           #fff;
+    border:          none;
+    border-radius:   8px;
+    font-size:       0.9rem;
+    font-weight:     600;
+    font-family:     inherit;
+    cursor:          pointer;
+    transition:      opacity 0.18s, box-shadow 0.18s;
+    display:         flex;
+    align-items:     center;
+    justify-content: center;
+    gap:             8px;
+}
+.btn-login:hover {
+    background: var(--color-primary-dk);
+    box-shadow: 0 4px 16px rgba(15,118,110,0.35);
+}
+
+/* ── 10. Footer Note ───────────────────────────────────────── */
+.login-footer {
+    text-align: center;
+    margin-top: 28px;
+    font-size:  0.76rem;
+    color:      var(--color-text-muted);
+}
+
+/* ── 11. Responsive ────────────────────────────────────────── */
+@media (max-width: 768px) {
+    body             { flex-direction: column; }
+    .left-panel      { width: 100%; padding: 40px 24px 32px; }
+    .brand-features  { display: none; }
+    .right-panel     { padding: 32px 20px; }
+}

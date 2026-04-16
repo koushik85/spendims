@@ -1,0 +1,12 @@
+package com.spendilizer.repository;
+
+import com.spendilizer.entity.Invoice;
+import com.spendilizer.entity.InvoiceItem;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface InvoiceItemRepository extends JpaRepository<InvoiceItem, Long> {
+    List<InvoiceItem> findByInvoice(Invoice invoice);
+    void deleteByInvoice(Invoice invoice);
+}

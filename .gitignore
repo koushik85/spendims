@@ -1,0 +1,58 @@
+# Build outputs
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# Logs
+*.log
+logs/
+
+# Local docs/agent metadata
+HELP.md
+CLAUDE.md
+.claude/
+
+
+# STS / Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# VS Code
+.vscode/
+
+# User-requested additional ignores
+mvnw
+mnvw.cmd
+.mvn/
+.github/
+.idea.settings
+
+# OS files
+.DS_Store
+Thumbs.db
+.gitignore
+
+.gitattributes
+
+mvnw.cmd
