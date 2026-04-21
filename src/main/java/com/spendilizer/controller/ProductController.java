@@ -40,7 +40,7 @@ public class ProductController {
     @GetMapping
     public String listProducts(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("products", productService.getAllActiveProducts(resolveUser(principal)));
-        return "product/list";
+        return "ims/product/list";
     }
 
     @GetMapping("/new")
@@ -50,7 +50,7 @@ public class ProductController {
         model.addAttribute("categories", categoryService.getActiveCategories(user));
         model.addAttribute("suppliers", supplierService.getAllActiveSuppliers(user));
         model.addAttribute("masterProducts", masterProductService.getAllActiveMasterProducts());
-        return "product/form";
+        return "ims/product/form";
     }
 
     @PostMapping("/new")
@@ -77,7 +77,7 @@ public class ProductController {
         model.addAttribute("categories", categoryService.getActiveCategories(user));
         model.addAttribute("suppliers", supplierService.getAllActiveSuppliers(user));
         model.addAttribute("statuses", Status.values());
-        return "product/form";
+        return "ims/product/form";
     }
 
     @PostMapping("/edit/{id}")

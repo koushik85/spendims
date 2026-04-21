@@ -7,6 +7,9 @@ function selectType(type) {
     const companyField = document.getElementById('field-company');
     companyField.style.display = isEnt ? '' : 'none';
     document.getElementById('enterpriseName').required = isEnt;
+    const hi = document.getElementById('hint-individual');
+    const he = document.getElementById('hint-enterprise');
+    if (hi && he) { hi.style.display = isEnt ? 'none' : ''; he.style.display = isEnt ? '' : 'none'; }
 }
 
 // ── PAN validation ─────────────────────────────────────────────────────────

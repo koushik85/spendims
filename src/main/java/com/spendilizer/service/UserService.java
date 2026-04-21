@@ -1,10 +1,12 @@
 package com.spendilizer.service;
 
 import com.spendilizer.entity.Enterprise;
+import com.spendilizer.entity.GroupMember;
 import com.spendilizer.entity.Roles;
 import com.spendilizer.entity.User;
 import com.spendilizer.entity.UserRolesMapping;
 import com.spendilizer.repository.EnterpriseRepository;
+import com.spendilizer.repository.GroupMemberRepository;
 import com.spendilizer.repository.RolesRepository;
 import com.spendilizer.repository.UserRepository;
 import com.spendilizer.repository.UserRolesMappingRepository;
@@ -21,17 +23,20 @@ public class UserService {
     private final EnterpriseRepository enterpriseRepository;
     private final RolesRepository rolesRepository;
     private final UserRolesMappingRepository userRolesMappingRepository;
+    private final GroupMemberRepository groupMemberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
                        EnterpriseRepository enterpriseRepository,
                        RolesRepository rolesRepository,
                        UserRolesMappingRepository userRolesMappingRepository,
+                       GroupMemberRepository groupMemberRepository,
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.enterpriseRepository = enterpriseRepository;
         this.rolesRepository = rolesRepository;
         this.userRolesMappingRepository = userRolesMappingRepository;
+        this.groupMemberRepository = groupMemberRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -63,6 +68,7 @@ public class UserService {
         if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
         User saved = userRepository.save(user);
         assignRole(saved, "USER");
+        linkPendingGroupMembers(saved);
     }
 
     @Transactional
@@ -80,6 +86,7 @@ public class UserService {
         userRepository.save(savedUser);
 
         assignRole(savedUser, "ENTERPRISE_OWNER");
+        linkPendingGroupMembers(savedUser);
     }
 
     @Transactional
@@ -90,6 +97,22 @@ public class UserService {
         member.setEnterprise(enterprise);
         User saved = userRepository.save(member);
         assignRole(saved, "ENTERPRISE_MEMBER");
+        linkPendingGroupMembers(saved);
+    }
+
+    /**
+     * Links any unlinked GroupMember slots whose email matches this user's email.
+     * Called after every registration path so a user is immediately connected to
+     * groups they were added to before they signed up.
+     */
+    private void linkPendingGroupMembers(User user) {
+        if (user.getEmail() == null) return;
+        List<GroupMember> pending = groupMemberRepository
+                .findByEmailAndLinkedUserIsNull(user.getEmail());
+        for (GroupMember member : pending) {
+            member.setLinkedUser(user);
+            groupMemberRepository.save(member);
+        }
     }
 
     @Transactional

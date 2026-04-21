@@ -30,16 +30,14 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             roles.stream().map(GrantedAuthority::getAuthority).toList(),
             resolveClientIp(request));
 
-//        if (roles.size() == 1) {
-//            String role = roles.iterator().next().getAuthority();
-//            HttpSession session = request.getSession();
-//            session.setAttribute("currentRole", role);
-//            redirectBasedOnRole(role, response);
-//        } else {
-//            request.getSession().setAttribute("AVAILABLE_ROLES", roles);
-//            response.sendRedirect("/accredit/select-role");
-//        }
-        response.sendRedirect("/spendilizer/dashboard");
+        String accountType = userDetails.getUser().getAccountType();
+        if ("ENTERPRISE_OWNER".equals(accountType) || "ENTERPRISE_MEMBER".equals(accountType)) {
+            request.getSession().setAttribute("currentModule", "IMS");
+            response.sendRedirect("/spendilizer/dashboard");
+        } else {
+            request.getSession().setAttribute("currentModule", "PERSONAL");
+            response.sendRedirect("/spendilizer/personal/dashboard");
+        }
     }
 
     private String resolveClientIp(HttpServletRequest request) {

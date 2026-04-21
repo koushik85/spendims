@@ -29,13 +29,13 @@ public class SupplierController {
     @GetMapping
     public String listSuppliers(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("suppliers", supplierService.getAllActiveSuppliers(resolveUser(principal)));
-        return "supplier/list";
+        return "ims/supplier/list";
     }
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
         model.addAttribute("supplier", new Supplier());
-        return "supplier/form";
+        return "ims/supplier/form";
     }
 
     @PostMapping("/new")
@@ -55,7 +55,7 @@ public class SupplierController {
                 .orElseThrow(() -> new RuntimeException("Supplier not found: " + id));
         model.addAttribute("supplier", supplier);
         model.addAttribute("statuses", Arrays.asList(Status.values()));
-        return "supplier/form";
+        return "ims/supplier/form";
     }
 
     @PostMapping("/edit/{id}")

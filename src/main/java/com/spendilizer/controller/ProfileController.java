@@ -26,7 +26,7 @@ public class ProfileController {
     @GetMapping("/edit")
     public String showEditForm(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("profileUser", resolveUser(principal));
-        return "profile/edit";
+        return "ims/profile/edit";
     }
 
     @PostMapping("/edit")
@@ -52,7 +52,7 @@ public class ProfileController {
 
     @GetMapping("/reset-password")
     public String showResetForm() {
-        return "profile/reset-password";
+        return "ims/profile/reset-password";
     }
 
     @PostMapping("/reset-password")

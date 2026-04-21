@@ -29,7 +29,7 @@ public class EnterpriseController {
         List<User> members = userService.getMembersByEnterprise(enterprise);
         model.addAttribute("enterprise", enterprise);
         model.addAttribute("members", members);
-        return "enterprise/members";
+        return "ims/enterprise/members";
     }
 
     @PostMapping("/members/add")
