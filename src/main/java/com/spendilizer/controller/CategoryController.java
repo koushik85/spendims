@@ -28,14 +28,14 @@ public class CategoryController {
     public String listCategories(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         User user = resolveUser(principal);
         model.addAttribute("categories", categoryService.getAllActiveCategory(user));
-        return "category/list";
+        return "ims/category/list";
     }
 
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("category", new Category());
         model.addAttribute("statuses", Status.values());
-        return "category/form";
+        return "ims/category/form";
     }
 
     @PostMapping("/new")
@@ -49,7 +49,7 @@ public class CategoryController {
             return "redirect:/category";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            return "category/form";
+            return "ims/category/form";
         }
     }
 
@@ -61,7 +61,7 @@ public class CategoryController {
                 .orElseThrow(() -> new RuntimeException("Category not found: " + id));
         model.addAttribute("category", category);
         model.addAttribute("statuses", Status.values());
-        return "category/form";
+        return "ims/category/form";
     }
 
     @PostMapping("/edit/{id}")
@@ -77,7 +77,7 @@ public class CategoryController {
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("statuses", Status.values());
-            return "category/form";
+            return "ims/category/form";
         }
     }
 

@@ -49,7 +49,7 @@ public class InvoiceController {
     @GetMapping
     public String list(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("invoices", invoiceService.getAll(resolveUser(principal)));
-        return "invoice/list";
+        return "ims/invoice/list";
     }
 
     @GetMapping("/new")
@@ -73,7 +73,7 @@ public class InvoiceController {
         model.addAttribute("customers", customerService.getAllActive(user));
         model.addAttribute("products", productService.getAllActiveProducts(user));
         model.addAttribute("orders", salesOrderService.getAll(user));
-        return "invoice/form";
+        return "ims/invoice/form";
     }
 
     @PostMapping("/new")
@@ -110,7 +110,7 @@ public class InvoiceController {
         Invoice invoice = invoiceService.getById(id, resolveUser(principal))
                 .orElseThrow(() -> new RuntimeException("Invoice not found: " + id));
         model.addAttribute("invoice", invoice);
-        return "invoice/view";
+        return "ims/invoice/view";
     }
 
     @GetMapping("/edit/{id}")
@@ -127,7 +127,7 @@ public class InvoiceController {
         model.addAttribute("customers", customerService.getAllActive(user));
         model.addAttribute("products", productService.getAllActiveProducts(user));
         model.addAttribute("orders", salesOrderService.getAll(user));
-        return "invoice/form";
+        return "ims/invoice/form";
     }
 
         @GetMapping(value = "/{id}/pdf", produces = MediaType.APPLICATION_PDF_VALUE)

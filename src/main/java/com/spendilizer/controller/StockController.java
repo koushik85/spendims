@@ -37,14 +37,14 @@ public class StockController {
         model.addAttribute("stocks",        stocks);
         model.addAttribute("lowStockCount", lowStocks.size());
         model.addAttribute("totalCount",    stocks.size());
-        return "stock/list";
+        return "ims/stock/list";
     }
 
     @GetMapping("/new")
     public String showAddForm(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("stock",    new Stock());
         model.addAttribute("products", productService.getAllActiveProducts(resolveUser(principal)));
-        return "stock/form";
+        return "ims/stock/form";
     }
 
     @PostMapping("/new")
@@ -63,7 +63,7 @@ public class StockController {
         model.addAttribute("stock",    stock);
         model.addAttribute("products", productService.getAllActiveProducts(resolveUser(principal)));
         model.addAttribute("statuses", Status.values());
-        return "stock/form";
+        return "ims/stock/form";
     }
 
     @PostMapping("/edit/{id}")

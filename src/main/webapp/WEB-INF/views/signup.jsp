@@ -89,7 +89,7 @@
         </svg>
     </div>
     <div class="brand-name">Spendilizer</div>
-    <div class="brand-tagline">A complete automation suite for smarter inventory management.</div>
+    <div class="brand-tagline">Personal finance tools and inventory management — in one place.</div>
 
     <div class="brand-features">
         <div class="brand-feature">
@@ -124,7 +124,7 @@
     <div class="login-box">
 
         <div class="signup-heading">Create your account</div>
-        <div class="signup-sub">Join Spendilizer and start managing smarter</div>
+        <div class="signup-sub">Choose your account type to get started</div>
 
         <%-- Error alert --%>
         <c:if test="${not empty error}">
@@ -147,7 +147,7 @@
                 </div>
                 <div>
                     <div class="type-label">Individual</div>
-                    <div class="type-sublabel">Personal account</div>
+                    <div class="type-sublabel">Splits &amp; subscriptions</div>
                 </div>
             </div>
             <div class="type-card ${activeTab == 'ENTERPRISE' ? 'active' : ''}"
@@ -159,9 +159,14 @@
                 </div>
                 <div>
                     <div class="type-label">Enterprise</div>
-                    <div class="type-sublabel">Team &amp; company</div>
+                    <div class="type-sublabel">Inventory &amp; team</div>
                 </div>
             </div>
+        </div>
+
+        <div id="type-hint" style="font-size:0.76rem;color:var(--color-text-muted);margin:-18px 0 20px;line-height:1.5;">
+            <span id="hint-individual">Track shared expenses, manage subscriptions, and stay on top of personal finances.</span>
+            <span id="hint-enterprise" style="display:none;">Full inventory system — products, stock, orders, invoices — plus personal finance tools.</span>
         </div>
 
         <form action="/spendilizer/signup" method="post" id="signupForm">

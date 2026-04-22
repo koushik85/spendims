@@ -65,7 +65,7 @@ public class StockMovementController {
         model.addAttribute("outCount",          outCount);
         model.addAttribute("filterProductId",   productId);
         model.addAttribute("filterType",        type);
-        return "stock-movement/list";
+        return "ims/stock-movement/list";
     }
 
     @GetMapping("/new")
@@ -74,7 +74,7 @@ public class StockMovementController {
         model.addAttribute("movement", new StockMovement());
         model.addAttribute("products", productService.getAllProducts(user));
         model.addAttribute("types",    StockMovementType.values());
-        return "stock-movement/form";
+        return "ims/stock-movement/form";
     }
 
     @PostMapping("/new")
@@ -114,7 +114,7 @@ public class StockMovementController {
                 .orElseThrow(() -> new RuntimeException("StockMovement not found: " + id));
         model.addAttribute("movement", movement);
         model.addAttribute("statuses", Status.values());
-        return "stock-movement/form";
+        return "ims/stock-movement/form";
     }
 
     @PostMapping("/edit/{id}")

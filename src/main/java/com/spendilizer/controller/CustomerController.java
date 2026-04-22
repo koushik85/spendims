@@ -29,13 +29,13 @@ public class CustomerController {
     @GetMapping
     public String list(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("customers", customerService.getAllActive(resolveUser(principal)));
-        return "customer/list";
+        return "ims/customer/list";
     }
 
     @GetMapping("/new")
     public String showNewForm(Model model) {
         model.addAttribute("customer", new Customer());
-        return "customer/form";
+        return "ims/customer/form";
     }
 
     @PostMapping("/new")
@@ -59,7 +59,7 @@ public class CustomerController {
                 .orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         model.addAttribute("customer", customer);
         model.addAttribute("statuses", Arrays.asList(Status.values()));
-        return "customer/form";
+        return "ims/customer/form";
     }
 
     @PostMapping("/edit/{id}")

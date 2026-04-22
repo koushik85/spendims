@@ -22,7 +22,7 @@
     * { box-sizing: border-box; }
 
     body {
-        font-family: 'Geist', 'Segoe UI', system-ui, -apple-system, sans-serif;
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
         margin: 0;
         padding: 0;
         background: var(--color-bg);
@@ -551,4 +551,46 @@
     .ims-layout-body {
         margin-left: var(--sidebar-width);
         padding-top: var(--topbar-height);
+    }
+
+    /* ── Module toggle ────────────────────────────── */
+    .module-toggle {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        background: rgba(255,255,255,0.07);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 8px;
+        padding: 3px;
+        margin-right: 4px;
+        flex-shrink: 0;
+    }
+
+    .mod-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 11px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: rgba(255,255,255,0.55);
+        border-radius: 5px;
+        text-decoration: none;
+        transition: all 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .mod-btn:hover {
+        color: rgba(255,255,255,0.85);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .mod-btn--active {
+        background: #0f766e;
+        color: #ffffff;
+    }
+
+    .mod-btn--active:hover {
+        background: #115e59;
+        color: #ffffff;
     }

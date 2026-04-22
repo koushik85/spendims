@@ -96,6 +96,6 @@ public class DashboardController {
         model.addAttribute("paidRevenue",     paidRevenue);
         model.addAttribute("unpaidInvoices",  unpaidInvoices);
 
-        return "dashboard";
+        return "ims/dashboard";
     }
 }

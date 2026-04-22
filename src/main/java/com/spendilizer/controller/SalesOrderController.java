@@ -43,7 +43,7 @@ public class SalesOrderController {
     @GetMapping
     public String list(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
         model.addAttribute("orders", salesOrderService.getAll(resolveUser(principal)));
-        return "order/list";
+        return "ims/order/list";
     }
 
     @GetMapping("/new")
@@ -53,7 +53,7 @@ public class SalesOrderController {
         model.addAttribute("customers", customerService.getAllActive(user));
         model.addAttribute("products", productService.getAllActiveProducts(user));
         model.addAttribute("paymentModes", OrderPaymentMode.values());
-        return "order/form";
+        return "ims/order/form";
     }
 
     @PostMapping("/new")
@@ -91,7 +91,7 @@ public class SalesOrderController {
         model.addAttribute("order", order);
         invoiceService.findByOrderId(id, user).ifPresent(inv ->
                 model.addAttribute("linkedInvoice", inv));
-        return "order/view";
+        return "ims/order/view";
     }
 
     @GetMapping("/edit/{id}")
@@ -107,7 +107,7 @@ public class SalesOrderController {
         model.addAttribute("customers", customerService.getAllActive(user));
         model.addAttribute("products", productService.getAllActiveProducts(user));
         model.addAttribute("paymentModes", OrderPaymentMode.values());
-        return "order/form";
+        return "ims/order/form";
     }
 
     @PostMapping("/edit/{id}")

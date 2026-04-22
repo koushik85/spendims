@@ -24,6 +24,8 @@
     --color-success-lt: #dcfce7;
     --color-danger:     #dc2626;
     --color-danger-lt:  #fee2e2;
+    --color-purple:     #7c3aed;
+    --color-purple-lt:  #ede9fe;
 
     /* Surface */
     --color-bg:         #f8fafc;
@@ -49,10 +51,11 @@
 
 body {
     background:   var(--color-bg);
-    font-family:  'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family:  'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     color:        var(--color-text);
     margin:       0;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* ── 3. Layout ─────────────────────────────────────────────── */
@@ -86,6 +89,102 @@ body.sidebar-collapsed .ims-topbar {
 }
 body.sidebar-collapsed .main-content {
     margin-left: 0;
+}
+
+/* ── Sidebar shell (shared by IMS + Personal) ──────────────── */
+#sidebar-wrapper {
+    min-height:     100vh;
+    background:     #1e293b;
+    width:          var(--sidebar-width);
+    position:       fixed;
+    top:            0;
+    left:           0;
+    z-index:        150;
+    display:        flex;
+    flex-direction: column;
+    box-shadow:     2px 0 16px rgba(0,0,0,0.18);
+    transition:     transform 0.25s ease;
+}
+.sidebar-brand {
+    padding:       22px 20px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    margin-bottom: 6px;
+}
+.sidebar-brand .brand-title {
+    font-size:   1.05rem;
+    font-weight: 700;
+    color:       #ffffff;
+    letter-spacing: 0.3px;
+}
+.sidebar-brand .brand-subtitle {
+    font-size:      0.68rem;
+    color:          #64748b;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    margin-top:     3px;
+}
+.sidebar-section-label {
+    font-size:      0.62rem;
+    font-weight:    700;
+    color:          #475569;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+    padding:        16px 20px 5px;
+}
+#sidebar-wrapper .nav-link {
+    display:         flex;
+    align-items:     center;
+    gap:             10px;
+    padding:         9px 20px;
+    font-size:       0.84rem;
+    font-weight:     400;
+    color:           #94a3b8;
+    text-decoration: none;
+    border-left:     3px solid transparent;
+    transition:      all 0.15s ease;
+    margin:          1px 0;
+    border-radius:   0 6px 6px 0;
+    margin-right:    8px;
+}
+#sidebar-wrapper .nav-link:hover {
+    background:       rgba(255,255,255,0.06);
+    color:            #e2e8f0;
+    border-left-color: #5eead4;
+}
+#sidebar-wrapper .nav-link.active {
+    background:       rgba(15,118,110,0.22);
+    color:            #ffffff;
+    border-left-color: #0f766e;
+    font-weight:      500;
+}
+#sidebar-wrapper .nav-link .nav-icon {
+    width:     16px;
+    height:    16px;
+    opacity:   0.6;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+}
+#sidebar-wrapper .nav-link:hover  .nav-icon,
+#sidebar-wrapper .nav-link.active .nav-icon { opacity: 1; }
+.sidebar-footer {
+    margin-top:    auto;
+    padding:       16px 20px;
+    border-top:    1px solid rgba(255,255,255,0.06);
+    font-size:     0.72rem;
+    color:         #334155;
+}
+
+/* ── Page header improvements ──────────────────────────────── */
+.page-header h2 .greeting {
+    font-size:   1rem;
+    font-weight: 400;
+    color:       var(--color-text-muted);
+    display:     block;
+    margin-bottom: 2px;
+}
+.page-header h2 .page-title-main {
+    font-size:   1.35rem;
+    font-weight: 700;
 }
 
 /* ── 4. Breadcrumb ─────────────────────────────────────────── */
@@ -292,6 +391,7 @@ body.sidebar-collapsed .main-content {
     align-items:   center;
     gap:           10px;
     margin-bottom: 28px;
+    margin-left:   40px;
     animation:     ims-slide-down 0.3s ease;
 }
 .alert-banner a { color: #92400e; font-weight: 600; text-decoration: underline; }
@@ -967,6 +1067,9 @@ body.sidebar-collapsed .main-content {
 }
 .activity-header a { font-size: 0.78rem; color: var(--color-primary); text-decoration: none; font-weight: 500; transition: opacity 0.15s; }
 .activity-header a:hover { opacity: 0.75; }
+
+/* Body padding for activity-cards that use custom rows (not a table) */
+.activity-body { padding: 4px 20px 16px; }
 
 .activity-table {
     width:           100%;

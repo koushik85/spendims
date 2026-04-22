@@ -5,7 +5,7 @@
 <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <link href="/spendilizer/css/navbar.css" rel="stylesheet">
 
@@ -21,14 +21,22 @@
         </svg>
     </button>
 
-    <!-- Page context / breadcrumb -->
+    <!-- Page context -->
     <div class="topbar-context">
-        <span class="topbar-page">Admin Portal</span>
+        <span class="topbar-page">Spendilizer</span>
         <span class="topbar-sep"></span>
-        <span class="topbar-sub">Inventory Management System</span>
+        <c:choose>
+            <c:when test="${pageContext.session.getAttribute('currentModule') == 'PERSONAL'}">
+                <span class="topbar-sub">Personal Finance</span>
+            </c:when>
+            <c:otherwise>
+                <span class="topbar-sub">Inventory</span>
+            </c:otherwise>
+        </c:choose>
     </div>
 
-    <!-- Search -->
+    <!-- Search (IMS only) -->
+    <c:if test="${pageContext.session.getAttribute('currentModule') != 'PERSONAL'}">
     <div class="topbar-search" id="globalSearchWrap">
         <svg class="search-icon" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
@@ -37,6 +45,7 @@
                autocomplete="off" spellcheck="false">
         <div class="search-dropdown" id="searchDropdown"></div>
     </div>
+    </c:if>
 
     <!-- User / Enterprise context chip -->
     <c:if test="${not empty user}">
@@ -68,6 +77,26 @@
                     </div>
                 </c:otherwise>
             </c:choose>
+        </div>
+    </c:if>
+
+    <!-- Module toggle (enterprise users only) -->
+    <c:if test="${not empty user && (user.accountType == 'ENTERPRISE_OWNER' || user.accountType == 'ENTERPRISE_MEMBER')}">
+        <div class="module-toggle">
+            <a href="/spendilizer/switch-module?to=PERSONAL"
+               class="mod-btn ${pageContext.session.getAttribute('currentModule') == 'PERSONAL' ? 'mod-btn--active' : ''}">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Personal
+            </a>
+            <a href="/spendilizer/switch-module?to=IMS"
+               class="mod-btn ${pageContext.session.getAttribute('currentModule') != 'PERSONAL' ? 'mod-btn--active' : ''}">
+                <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                </svg>
+                IMS
+            </a>
         </div>
     </c:if>
 
