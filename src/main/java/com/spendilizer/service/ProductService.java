@@ -11,6 +11,7 @@ import com.spendilizer.repository.CategoryRepository;
 import com.spendilizer.repository.HsnRepository;
 import com.spendilizer.repository.ProductRepository;
 import com.spendilizer.repository.SupplierRepository;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -52,20 +53,34 @@ public class ProductService {
     public Product createProductFromMaster(Long masterProductId, Product pricingInput, User user) {
         MasterProduct master = masterProductService.getActiveById(masterProductId);
         List<User> scopeUsers = userService.getScopeUsers(user);
+        Supplier selectedSupplier = resolveSelectedSupplier(pricingInput.getSupplier(), scopeUsers);
+        Category category = resolveOrCreateCategory(master.getCategoryName(), user);
+        Hsn hsn = resolveOrCreateHsn(master.getHsnCode());
 
         Product product = new Product();
         product.setName(master.getName());
-        product.setSku(generateSku(master.getCategoryName(), master.getName(), user));
         product.setDescription(master.getDescription());
-        product.setCategory(resolveOrCreateCategory(master.getCategoryName(), user, scopeUsers));
-        product.setSupplier(resolveSupplierForMaster(pricingInput.getSupplier(), master.getSupplierName(), user, scopeUsers));
-        product.setHsn(resolveOrCreateHsn(master.getHsnCode()));
+        product.setCategory(category);
+        product.setSupplier(selectedSupplier);
+        product.setHsn(hsn);
         product.setCostPrice(defaultMoney(pricingInput.getCostPrice()));
         product.setSellingPrice(defaultMoney(pricingInput.getSellingPrice()));
         product.setMrp(defaultMoney(pricingInput.getMrp()));
         product.setCreatedBy(user);
         product.setRowStatus(Status.ACTIVE);
-        return productRepository.save(product);
+
+        for (int attempt = 0; attempt < 3; attempt++) {
+            product.setSku(generateSku(master.getCategoryName(), master.getName(), user));
+            try {
+                return productRepository.save(product);
+            } catch (DataIntegrityViolationException ex) {
+                if (productRepository.existsBySkuIgnoreCase(product.getSku())) {
+                    continue;
+                }
+                throw ex;
+            }
+        }
+        throw new IllegalArgumentException("Unable to generate a unique SKU for this product. Please try again.");
     }
 
     public List<Product> getAllProducts(User user) {
@@ -83,15 +98,11 @@ public class ProductService {
     public Product updateProduct(Long id, Product updatedProduct, User user) {
         Product existing = getProductById(id, user)
                 .orElseThrow(() -> new RuntimeException("Product not found: " + id));
-        existing.setName(updatedProduct.getName());
-        existing.setSku(updatedProduct.getSku());
         existing.setCostPrice(defaultMoney(updatedProduct.getCostPrice()));
         existing.setSellingPrice(defaultMoney(updatedProduct.getSellingPrice()));
         existing.setMrp(defaultMoney(updatedProduct.getMrp()));
         existing.setDescription(updatedProduct.getDescription());
-        existing.setCategory(updatedProduct.getCategory());
         existing.setSupplier(updatedProduct.getSupplier());
-        existing.setRowStatus(updatedProduct.getRowStatus());
         return productRepository.save(existing);
     }
 
@@ -103,9 +114,11 @@ public class ProductService {
     }
 
     public String generateSku(String categoryName, String productName, User user) {
+        String customerId = resolveCustomerId(user);
         String catPrefix  = buildPrefix(categoryName);
         String prodPrefix = buildPrefix(productName);
-        List<String> existingSkus = productRepository.findSkusByPrefix(catPrefix + "-", userService.getScopeUsers(user));
+        String skuPrefix  = customerId + "-" + catPrefix + "-";
+        List<String> existingSkus = productRepository.findSkusByPrefix(skuPrefix, userService.getScopeUsers(user));
 
         int nextNumber = 1;
         if (!existingSkus.isEmpty()) {
@@ -117,7 +130,25 @@ public class ProductService {
                     .max().orElse(0);
             nextNumber = max + 1;
         }
-        return catPrefix + "-" + prodPrefix + "-" + String.format("%03d", nextNumber);
+        return skuPrefix + prodPrefix + "-" + String.format("%03d", nextNumber);
+    }
+
+    /**
+     * Returns the customer ID to embed in SKUs.
+     * Enterprise members use the owner's customer ID so all products in the
+     * same enterprise share a consistent prefix.
+     * Back-fills a customer ID for legacy users who registered before this
+     * feature was added.
+     */
+    private String resolveCustomerId(User user) {
+        User accountHolder = user;
+        if ("ENTERPRISE_MEMBER".equals(user.getAccountType()) && user.getEnterprise() != null) {
+            accountHolder = user.getEnterprise().getOwner();
+        }
+        if (accountHolder.getCustomerId() == null) {
+            return userService.generateAndPersistCustomerId(accountHolder);
+        }
+        return accountHolder.getCustomerId();
     }
 
     private String buildPrefix(String input) {
@@ -133,39 +164,57 @@ public class ProductService {
         return prefix.toString();
     }
 
-    private Category resolveOrCreateCategory(String name, User user, List<User> scopeUsers) {
-        return categoryRepository.findFirstByNameIgnoreCaseAndCreatedByInAndRowStatus(name, scopeUsers, Status.ACTIVE)
-                .orElseGet(() -> {
-                    Category category = new Category();
-                    category.setName(name);
-                    category.setDescription("Auto-created from master product catalog.");
-                    category.setCreatedBy(user);
-                    category.setRowStatus(Status.ACTIVE);
-                    return categoryRepository.save(category);
-                });
-    }
-
-    private Supplier resolveOrCreateSupplier(String name, User user, List<User> scopeUsers) {
-        return supplierRepository.findFirstByNameIgnoreCaseAndCreatedByInAndRowStatus(name, scopeUsers, Status.ACTIVE)
-                .orElseGet(() -> {
-                    Supplier supplier = new Supplier();
-                    supplier.setName(name);
-                    supplier.setCreatedBy(user);
-                    supplier.setRowStatus(Status.ACTIVE);
-                    return supplierRepository.save(supplier);
-                });
-    }
-
-    private Supplier resolveSupplierForMaster(Supplier selectedSupplier,
-                                              String masterSupplierName,
-                                              User user,
-                                              List<User> scopeUsers) {
-        Long selectedSupplierId = selectedSupplier != null ? selectedSupplier.getId() : null;
-        if (selectedSupplierId != null && selectedSupplierId > 0) {
-            return supplierRepository.findByIdAndCreatedByIn(selectedSupplierId, scopeUsers)
-                    .orElseThrow(() -> new RuntimeException("Selected supplier not found: " + selectedSupplierId));
+    private Category resolveOrCreateCategory(String name, User user) {
+        String normalizedName = name == null ? "" : name.trim();
+        if (normalizedName.isEmpty()) {
+            throw new IllegalArgumentException("Master product category is missing. Please update the master product.");
         }
-        return resolveOrCreateSupplier(masterSupplierName, user, scopeUsers);
+
+        Optional<Category> existingOpt = categoryRepository.findFirstByNameIgnoreCase(normalizedName);
+        if (existingOpt.isPresent()) {
+            Category existing = existingOpt.get();
+            boolean dirty = false;
+
+            if (existing.getRowStatus() != Status.ACTIVE) {
+                existing.setRowStatus(Status.ACTIVE);
+                dirty = true;
+            }
+            if (existing.getDescription() == null || existing.getDescription().isBlank()) {
+                existing.setDescription("Auto-created from master product catalog.");
+                dirty = true;
+            }
+            if (existing.getCreatedBy() == null) {
+                existing.setCreatedBy(user);
+                dirty = true;
+            }
+
+            return dirty ? categoryRepository.save(existing) : existing;
+        }
+
+        Category category = new Category();
+        category.setName(normalizedName);
+        category.setDescription("Auto-created from master product catalog.");
+        category.setCreatedBy(user);
+        category.setRowStatus(Status.ACTIVE);
+
+        try {
+            return categoryRepository.save(category);
+        } catch (DataIntegrityViolationException ex) {
+            // Handle a race where another request inserted the same category name.
+            return categoryRepository.findFirstByNameIgnoreCase(normalizedName)
+                    .orElseThrow(() -> ex);
+        }
+    }
+
+    private Supplier resolveSelectedSupplier(Supplier selectedSupplier,
+                                             List<User> scopeUsers) {
+        Long selectedSupplierId = selectedSupplier != null ? selectedSupplier.getId() : null;
+        if (selectedSupplierId == null || selectedSupplierId <= 0) {
+            throw new IllegalArgumentException("Please select a supplier before creating a product from the master list.");
+        }
+
+        return supplierRepository.findByIdAndCreatedByIn(selectedSupplierId, scopeUsers)
+                .orElseThrow(() -> new IllegalArgumentException("Selected supplier is invalid. Please choose a valid supplier."));
     }
 
     private Hsn resolveOrCreateHsn(String hsnCode) {

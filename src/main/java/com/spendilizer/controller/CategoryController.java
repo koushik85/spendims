@@ -2,7 +2,6 @@ package com.spendilizer.controller;
 
 import com.spendilizer.config.CustomUserDetails;
 import com.spendilizer.entity.Category;
-import com.spendilizer.entity.Status;
 import com.spendilizer.entity.User;
 import com.spendilizer.service.CategoryService;
 import com.spendilizer.service.UserService;
@@ -34,7 +33,6 @@ public class CategoryController {
     @GetMapping("/new")
     public String showAddForm(Model model) {
         model.addAttribute("category", new Category());
-        model.addAttribute("statuses", Status.values());
         return "ims/category/form";
     }
 
@@ -60,7 +58,6 @@ public class CategoryController {
         Category category = categoryService.getCategoryById(id, user)
                 .orElseThrow(() -> new RuntimeException("Category not found: " + id));
         model.addAttribute("category", category);
-        model.addAttribute("statuses", Status.values());
         return "ims/category/form";
     }
 
@@ -76,8 +73,7 @@ public class CategoryController {
             return "redirect:/category";
         } catch (IllegalArgumentException e) {
             model.addAttribute("errorMessage", e.getMessage());
-            model.addAttribute("statuses", Status.values());
-            return "ims/category/form";
+                return "ims/category/form";
         }
     }
 

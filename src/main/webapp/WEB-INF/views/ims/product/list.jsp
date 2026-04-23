@@ -21,12 +21,15 @@
                     <h2>Products</h2>
                     <div class="page-subtitle">Manage your product inventory</div>
                 </div>
-                <a href="/spendilizer/product/new" class="btn-primary-custom">
-                    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-                    </svg>
-                    Add Product
-                </a>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <a href="/spendilizer/product/request-master" class="btn-secondary-custom">Request Master Product</a>
+                    <a href="/spendilizer/product/new" class="btn-primary-custom">
+                        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                        </svg>
+                        Add Product
+                    </a>
+                </div>
             </div>
 
             <%-- Flash message --%>
@@ -36,6 +39,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                     </svg>
                     ${successMessage}
+                </div>
+            </c:if>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger" style="margin-bottom: 12px;">
+                    ${errorMessage}
                 </div>
             </c:if>
 
@@ -130,6 +139,10 @@
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                                         </svg>
                                         <p>No products found. <a href="/spendilizer/product/new" style="color: var(--color-primary);">Add one now.</a></p>
+                                        <p style="margin-top: 6px; font-size: 0.86rem;">
+                                            Missing product in catalog?
+                                            <a href="/spendilizer/product/request-master" style="color: var(--color-primary);">Request add to master list.</a>
+                                        </p>
                                     </div>
                                 </td>
                             </tr>

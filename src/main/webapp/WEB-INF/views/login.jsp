@@ -66,14 +66,32 @@
         </c:if>
 
         <%-- Error alert --%>
-        <c:if test="${not empty error}">
-            <div class="flash-error">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-                    ${error}
-            </div>
-        </c:if>
+        <c:choose>
+            <c:when test="${param.error == 'pending'}">
+                <div class="flash-error" style="background:#fef9c3;border-color:#fde047;color:#854d0e;">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Your business account is pending approval. You'll be notified once a Super Admin reviews it.
+                </div>
+            </c:when>
+            <c:when test="${param.error == 'rejected'}">
+                <div class="flash-error">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Your business account registration was rejected. Please contact support.
+                </div>
+            </c:when>
+            <c:when test="${param.error != null}">
+                <div class="flash-error">
+                    <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="flex-shrink:0;">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Invalid email or password.
+                </div>
+            </c:when>
+        </c:choose>
 
         <form action="/spendilizer/perform-login" method="post">
 

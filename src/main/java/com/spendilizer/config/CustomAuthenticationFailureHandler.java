@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+import org.springframework.security.authentication.DisabledException;
+
 @Component
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
@@ -26,6 +28,20 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                 resolveClientIp(request),
                 exception.getClass().getSimpleName());
 
+        Throwable cause = exception;
+        while (cause.getCause() != null) cause = cause.getCause();
+
+        if (cause instanceof DisabledException) {
+            String msg = cause.getMessage();
+            if ("pending_approval".equals(msg)) {
+                response.sendRedirect(request.getContextPath() + "/login?error=pending");
+                return;
+            }
+            if ("rejected".equals(msg)) {
+                response.sendRedirect(request.getContextPath() + "/login?error=rejected");
+                return;
+            }
+        }
         response.sendRedirect(request.getContextPath() + "/login?error=true");
     }
 

@@ -10,6 +10,8 @@ function selectType(type) {
     const hi = document.getElementById('hint-individual');
     const he = document.getElementById('hint-enterprise');
     if (hi && he) { hi.style.display = isEnt ? 'none' : ''; he.style.display = isEnt ? '' : 'none'; }
+    const approvalNote = document.getElementById('enterprise-approval-note');
+    if (approvalNote) approvalNote.style.display = isEnt ? '' : 'none';
 }
 
 // ── PAN validation ─────────────────────────────────────────────────────────

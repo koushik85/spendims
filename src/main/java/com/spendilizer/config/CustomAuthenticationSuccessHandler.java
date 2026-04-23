@@ -31,7 +31,10 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
             resolveClientIp(request));
 
         String accountType = userDetails.getUser().getAccountType();
-        if ("ENTERPRISE_OWNER".equals(accountType) || "ENTERPRISE_MEMBER".equals(accountType)) {
+        if ("SUPER_ADMIN".equals(accountType)) {
+            request.getSession().setAttribute("currentModule", "ADMIN");
+            response.sendRedirect("/spendilizer/admin/dashboard");
+        } else if ("ENTERPRISE_OWNER".equals(accountType) || "ENTERPRISE_MEMBER".equals(accountType)) {
             request.getSession().setAttribute("currentModule", "IMS");
             response.sendRedirect("/spendilizer/dashboard");
         } else {

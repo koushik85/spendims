@@ -111,19 +111,6 @@
                                       placeholder="Any internal notes…">${customer.notes}</textarea>
                         </div>
 
-                        <c:if test="${not empty customer.id}">
-                            <div class="form-group">
-                                <label for="rowStatus">Status <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select id="rowStatus" name="rowStatus">
-                                        <c:forEach var="s" items="${statuses}">
-                                            <option value="${s}" ${customer.rowStatus == s ? 'selected' : ''}>${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                            </div>
-                        </c:if>
-
                         <div class="form-divider"></div>
                         <div class="form-actions">
                             <button type="submit" class="btn-save">

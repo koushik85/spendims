@@ -14,4 +14,5 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     List<Subscription> findAllByCreatedByAndStatusOrderByNextBillingDateAsc(User createdBy, SubscriptionStatus status);
     List<Subscription> findAllByCreatedByAndStatusAndNextBillingDateBetween(User createdBy, SubscriptionStatus status, LocalDate from, LocalDate to);
     Optional<Subscription> findByIdAndCreatedBy(Long id, User createdBy);
+    List<Subscription> findAllByStatus(SubscriptionStatus status);
 }

@@ -47,6 +47,15 @@
                     </svg>
                     Editing: <strong>${product.name}</strong> &nbsp;·&nbsp; SKU: ${product.sku} &nbsp;·&nbsp; ID: ${product.id}
                 </div>
+                <div class="field-hint" style="margin-bottom: 14px;">
+                    Master-derived fields (Name, SKU, Category, HSN) are locked. You can still update pricing, supplier, and description.
+                </div>
+            </c:if>
+
+            <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger" style="margin-bottom: 16px;">
+                    ${errorMessage}
+                </div>
             </c:if>
 
             <%-- Form card --%>
@@ -61,24 +70,33 @@
                             <div class="section-label">Master Catalog</div>
                             <div class="form-grid">
                                 <div class="form-group span-2">
-                                    <label for="masterProductId">Add From Master Product <span class="optional">optional</span></label>
+                                    <label for="masterProductId">Select From Master Product <span class="required">*</span></label>
                                     <div class="select-wrapper">
-                                        <select id="masterProductId" name="masterProductId">
-                                            <option value="">Not in master list? Add product manually…</option>
+                                        <select id="masterProductId" name="masterProductId" required <c:if test="${empty masterProducts}">disabled</c:if>>
+                                            <option value="" disabled selected>Select a master product…</option>
                                             <c:forEach var="m" items="${masterProducts}">
                                                 <option value="${m.id}"
                                                         data-name="<c:out value='${m.name}'/>"
-                                                        data-sku="<c:out value='${m.sku}'/>"
                                                         data-category="<c:out value='${m.categoryName}'/>"
-                                                        data-supplier="<c:out value='${m.supplierName}'/>"
                                                         data-hsn="<c:out value='${m.hsnCode}'/>"
                                                         data-description="<c:out value='${m.description}'/>">
-                                                    <c:out value="${m.name}"/> (<c:out value="${m.sku}"/>)
+                                                    <c:out value="${m.name}"/>
                                                 </option>
                                             </c:forEach>
                                         </select>
                                     </div>
-                                    <div class="field-hint">Select a master product to auto-fill details. You only need to set your store pricing.</div>
+                                    <div class="field-hint">Users can create products only from the master list. Select one to auto-fill details and set store pricing.</div>
+                                    <div class="field-hint" style="margin-top: 8px;">
+                                        Product not listed?
+                                        <a href="/spendilizer/product/request-master">Request Add to Master List</a>
+                                        ·
+                                        <a href="/spendilizer/product/my-requests">View My Requests</a>
+                                    </div>
+                                    <c:if test="${empty masterProducts}">
+                                        <div class="alert alert-warning" style="margin-top: 10px; margin-bottom: 0;">
+                                            No active master products are available right now. Submit a request to add one.
+                                        </div>
+                                    </c:if>
                                 </div>
                             </div>
 
@@ -98,13 +116,14 @@
                                        value="${product.name}"
                                        placeholder="e.g. Wireless Mouse"
                                        required
+                                        <c:if test="${not empty product.id}">readonly</c:if>
                                        autofocus>
                             </div>
 
                             <div class="form-group">
                                 <label for="category">Category <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="category" name="category.id" required>
+                                    <select id="category" name="category.id" <c:if test="${empty product.id}">required</c:if> <c:if test="${not empty product.id}">disabled</c:if>>
                                         <option value="" disabled ${empty product.category ? 'selected' : ''}>Select a category…</option>
                                         <c:forEach var="cat" items="${categories}">
                                             <option value="${cat.id}"
@@ -124,12 +143,15 @@
                                         name="sku"
                                         value="${product.sku}"
                                         placeholder="Auto-generated"
+                                        <c:if test="${not empty product.id}">readonly</c:if>
                                         required>
-                                    <button type="button"
-                                        id="generateSkuBtn"
-                                        class="sku-generate-btn">
-                                        ↻ Generate
-                                    </button>
+                                    <c:if test="${empty product.id}">
+                                        <button type="button"
+                                            id="generateSkuBtn"
+                                            class="sku-generate-btn">
+                                            ↻ Generate
+                                        </button>
+                                    </c:if>
                                 </div>
                                  <div class="field-hint">Auto-fills</div>
                             </div>
@@ -142,15 +164,22 @@
                                     placeholder="Search HSN (e.g. laptop, mobile)"
                                     value="${product.hsn.hsnCode}"
                                     autocomplete="off"
-                                    required>
+                                    <c:if test="${empty product.id}">required</c:if>
+                                    <c:if test="${not empty product.id}">readonly</c:if>>
 
                                 <input type="hidden"
                                      id="hsnId"
                                      name="hsn.id"
-                                     value="${product.hsn.id}">
+                                     value="${product.hsn.id}"
+                                     <c:if test="${not empty product.id}">disabled</c:if>>
 
                                 <div id="hsnSuggestions" class="suggestions-box"></div>
-                                <div class="field-hint">Search and select valid HSN code</div>
+                                <div class="field-hint">
+                                    <c:choose>
+                                        <c:when test="${not empty product.id}">Locked for master-derived products</c:when>
+                                        <c:otherwise>Search and select valid HSN code</c:otherwise>
+                                    </c:choose>
+                                </div>
                             </div>
 
                             <div class="form-group span-2">
@@ -213,10 +242,10 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="supplier">Supplier <span class="optional">optional</span></label>
+                                <label for="supplier">Supplier <span class="required">*</span></label>
                                 <div class="select-wrapper">
-                                    <select id="supplier" name="supplier.id">
-                                        <option value="">No supplier assigned</option>
+                                    <select id="supplier" name="supplier.id" required>
+                                        <option value="" disabled ${empty product.supplier ? 'selected' : ''}>Select a supplier...</option>
                                         <c:forEach var="sup" items="${suppliers}">
                                             <option value="${sup.id}"
                                                 ${not empty product.supplier and product.supplier.id == sup.id ? 'selected' : ''}>
@@ -225,22 +254,11 @@
                                         </c:forEach>
                                     </select>
                                 </div>
+                                <c:if test="${empty suppliers}">
+                                    <div class="field-hint">No suppliers found. <a href="/spendilizer/supplier/new">Add a supplier first</a>.</div>
+                                </c:if>
                             </div>
 
-                            <%-- Status — only shown in edit mode --%>
-                            <c:if test="${not empty product.id}">
-                                <div class="form-group">
-                                    <label for="rowStatus">Status <span class="required">*</span></label>
-                                    <div class="select-wrapper">
-                                        <select id="rowStatus" name="rowStatus">
-                                            <c:forEach var="s" items="${statuses}">
-                                                <option value="${s}" ${product.rowStatus == s ? 'selected' : ''}>${s}</option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-                                    <div class="field-hint">Inactive products won't appear in orders or reports.</div>
-                                </div>
-                            </c:if>
                         </div>
 
                         <div class="form-divider"></div>
@@ -250,7 +268,7 @@
                                 <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                                 </svg>
-                                ${empty product.id ? 'Create Product' : 'Save Changes'}
+                                ${empty product.id ? 'Create Product From Master' : 'Save Changes'}
                             </button>
                             <a href="/spendilizer/product" class="btn-cancel">Cancel</a>
                         </div>

@@ -1,7 +1,6 @@
 package com.spendilizer.controller;
 
 import com.spendilizer.config.CustomUserDetails;
-import com.spendilizer.entity.Status;
 import com.spendilizer.entity.Supplier;
 import com.spendilizer.entity.User;
 import com.spendilizer.service.SupplierService;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/supplier")
@@ -54,7 +51,6 @@ public class SupplierController {
         Supplier supplier = supplierService.getSupplierById(id, resolveUser(principal))
                 .orElseThrow(() -> new RuntimeException("Supplier not found: " + id));
         model.addAttribute("supplier", supplier);
-        model.addAttribute("statuses", Arrays.asList(Status.values()));
         return "ims/supplier/form";
     }
 

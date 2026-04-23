@@ -169,6 +169,10 @@
             <span id="hint-enterprise" style="display:none;">Full inventory system — products, stock, orders, invoices — plus personal finance tools.</span>
         </div>
 
+        <div id="enterprise-approval-note" style="display:none;font-size:0.76rem;background:#fef9c3;border:1px solid #fde047;color:#854d0e;border-radius:8px;padding:10px 14px;margin-bottom:18px;line-height:1.5;">
+            Business accounts require Super Admin approval before you can sign in. You will receive access once your account is reviewed.
+        </div>
+
         <form action="/spendilizer/signup" method="post" id="signupForm">
             <input type="hidden" name="accountType" id="accountTypeInput"
                    value="${empty activeTab || activeTab == 'INDIVIDUAL' ? 'INDIVIDUAL' : 'ENTERPRISE'}">

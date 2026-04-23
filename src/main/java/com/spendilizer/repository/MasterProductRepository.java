@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface MasterProductRepository extends JpaRepository<MasterProduct, Long> {
     List<MasterProduct> findAllByRowStatusOrderByNameAsc(Status rowStatus);
     Optional<MasterProduct> findByIdAndRowStatus(Long id, Status rowStatus);
+    boolean existsBySkuIgnoreCase(String sku);
+    boolean existsByNameIgnoreCaseAndCategoryNameIgnoreCaseAndRowStatus(String name,
+                                                                         String categoryName,
+                                                                         Status rowStatus);
 }

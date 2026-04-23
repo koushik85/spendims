@@ -64,6 +64,45 @@
         </div>
     </c:if>
 
+    <%-- Renewal notifications --%>
+    <c:if test="${not empty notifications}">
+        <div style="margin-left:40px;margin-bottom:20px;background:#fefce8;border:1px solid #fde047;border-radius:var(--radius-lg);padding:14px 18px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+                <div style="display:flex;align-items:center;gap:8px;font-weight:600;font-size:0.82rem;color:#854d0e;">
+                    <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                    </svg>
+                    Upcoming Renewals
+                </div>
+                <form action="/spendilizer/personal/subscriptions/notifications/dismiss-all" method="post" style="margin:0;">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                    <button type="submit" style="font-size:0.72rem;background:none;border:1px solid #fde047;border-radius:5px;padding:3px 10px;color:#854d0e;cursor:pointer;">Dismiss all</button>
+                </form>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;">
+                <c:forEach var="n" items="${notifications}">
+                    <div style="display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #fde047;border-radius:8px;padding:8px 14px;">
+                        <div style="font-size:0.82rem;color:#78350f;">
+                            <strong><c:out value="${n.subscription.name}"/></strong>
+                            renews in
+                            <c:choose>
+                                <c:when test="${n.daysUntilDue == 0}"><strong style="color:#dc2626;">today</strong></c:when>
+                                <c:when test="${n.daysUntilDue == 1}"><strong style="color:#dc2626;">1 day</strong></c:when>
+                                <c:otherwise><strong>${n.daysUntilDue} days</strong></c:otherwise>
+                            </c:choose>
+                            &nbsp;·&nbsp; <span style="font-family:monospace;">&#8377;<fmt:formatNumber value="${n.subscription.amount}" pattern="#,##0.00"/></span>
+                            &nbsp;·&nbsp; <span style="color:var(--color-text-muted);">${n.subscription.nextBillingDate}</span>
+                        </div>
+                        <form action="/spendilizer/personal/subscriptions/notifications/${n.id}/remove" method="post" style="margin:0;">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                            <button type="submit" title="Dismiss" style="background:none;border:none;cursor:pointer;color:#a16207;font-size:1rem;line-height:1;padding:0 4px;">&#x2715;</button>
+                        </form>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </c:if>
+
     <%-- Summary strip --%>
     <c:if test="${activeCount > 0}">
         <div class="summary-strip">

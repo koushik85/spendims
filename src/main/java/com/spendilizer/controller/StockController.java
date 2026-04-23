@@ -62,7 +62,6 @@ public class StockController {
                 .orElseThrow(() -> new RuntimeException("Stock not found: " + id));
         model.addAttribute("stock",    stock);
         model.addAttribute("products", productService.getAllActiveProducts(resolveUser(principal)));
-        model.addAttribute("statuses", Status.values());
         return "ims/stock/form";
     }
 
