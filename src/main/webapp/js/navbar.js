@@ -1,3 +1,95 @@
+// ── Bell notification dropdown ───────────────────────────────
+function toggleBell() {
+    const dropdown = document.getElementById('bellDropdown');
+    if (!dropdown) return;
+    const isOpen = dropdown.classList.contains('open');
+    if (!isOpen) {
+        dropdown.classList.add('open');
+        markNotificationsSeen();
+    } else {
+        dropdown.classList.remove('open');
+    }
+}
+
+function markNotificationsSeen() {
+    const badge = document.getElementById('bellBadge');
+    if (!badge) return;
+    fetch('/spendilizer/api/notifications/mark-seen', {
+        method: 'POST',
+        headers: { [_csrfHeader]: _csrfToken }
+    })
+    .then(r => r.json())
+    .then(() => {
+        if (badge) badge.style.display = 'none';
+        // Remove new highlight from all items
+        document.querySelectorAll('.notif-item--new').forEach(el => {
+            el.classList.remove('notif-item--new');
+        });
+    })
+    .catch(() => {});
+}
+
+function removeNotif(id) {
+    fetch('/spendilizer/api/notifications/' + id + '/remove', {
+        method: 'POST',
+        headers: { [_csrfHeader]: _csrfToken }
+    })
+    .then(r => r.json())
+    .then(data => {
+        const el = document.getElementById('notif-' + id);
+        if (el) el.remove();
+
+        const badge = document.getElementById('bellBadge');
+        if (badge) {
+            if (data.newCount > 0) {
+                badge.textContent = data.newCount;
+                badge.style.display = '';
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        const list = document.getElementById('notifList');
+        if (list && list.querySelectorAll('.notif-item').length === 0) {
+            list.innerHTML = '<div class="notif-empty">You\'re all caught up!</div>';
+            const footer = document.querySelector('.notif-panel-footer');
+            if (footer) footer.style.display = 'none';
+            const clearBtn = document.querySelector('.notif-clear-all');
+            if (clearBtn) clearBtn.style.display = 'none';
+        }
+    })
+    .catch(() => {});
+}
+
+function clearAllNotifs() {
+    const items = document.querySelectorAll('.notif-item');
+    const ids = Array.from(items).map(el => el.id.replace('notif-', ''));
+
+    Promise.all(ids.map(id =>
+        fetch('/spendilizer/api/notifications/' + id + '/remove', {
+            method: 'POST',
+            headers: { [_csrfHeader]: _csrfToken }
+        })
+    )).then(() => {
+        const list = document.getElementById('notifList');
+        if (list) list.innerHTML = '<div class="notif-empty">You\'re all caught up!</div>';
+        const badge = document.getElementById('bellBadge');
+        if (badge) badge.style.display = 'none';
+        const footer = document.querySelector('.notif-panel-footer');
+        if (footer) footer.style.display = 'none';
+        const clearBtn = document.querySelector('.notif-clear-all');
+        if (clearBtn) clearBtn.style.display = 'none';
+    }).catch(() => {});
+}
+
+document.addEventListener('click', function(e) {
+    const btn      = document.getElementById('bellBtn');
+    const dropdown = document.getElementById('bellDropdown');
+    if (btn && dropdown && !btn.contains(e.target) && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+    }
+});
+
 // ── User menu ────────────────────────────────────────────────
 function toggleUserMenu() {
     document.getElementById('userMenuDropdown').classList.toggle('open');

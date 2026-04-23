@@ -594,3 +594,155 @@
         background: #115e59;
         color: #ffffff;
     }
+
+    /* ── Bell badge ──────────────────────────────── */
+    .bell-badge {
+        position: absolute;
+        top: -4px; right: -4px;
+        min-width: 16px; height: 16px;
+        padding: 0 4px;
+        border-radius: 10px;
+        background: var(--color-danger);
+        color: #fff;
+        font-size: 0.58rem;
+        font-weight: 700;
+        display: flex; align-items: center; justify-content: center;
+        border: 1.5px solid var(--color-surface);
+        line-height: 1;
+        pointer-events: none;
+    }
+
+    /* ── Notification panel ──────────────────────── */
+    .notif-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        width: 320px;
+        background: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+        z-index: 500;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(-6px) scale(0.98);
+        pointer-events: none;
+        transition: opacity 0.15s, transform 0.15s;
+        max-height: 420px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .notif-panel.open {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        pointer-events: auto;
+    }
+
+    .notif-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 14px 8px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--color-text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.7px;
+        border-bottom: 1px solid var(--color-border);
+        flex-shrink: 0;
+    }
+
+    .notif-clear-all {
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: var(--color-text-muted);
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: inherit;
+        text-transform: none;
+        letter-spacing: 0;
+        transition: background 0.12s, color 0.12s;
+    }
+    .notif-clear-all:hover { background: var(--color-bg); color: var(--color-text); }
+
+    #notifList { overflow-y: auto; flex: 1; }
+    #notifList::-webkit-scrollbar { width: 4px; }
+    #notifList::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 4px; }
+
+    .notif-empty {
+        padding: 24px 16px;
+        text-align: center;
+        font-size: 0.8rem;
+        color: var(--color-text-muted);
+    }
+
+    .notif-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 10px 14px;
+        border-bottom: 1px solid #f1f5f9;
+        transition: background 0.12s;
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item:hover { background: var(--color-bg); }
+
+    .notif-item--new { background: #fefce8; }
+    .notif-item--new:hover { background: #fef9c3; }
+
+    .notif-icon {
+        width: 28px; height: 28px;
+        border-radius: 6px;
+        background: var(--color-primary-lt);
+        color: var(--color-primary);
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    .notif-body { flex: 1; min-width: 0; }
+
+    .notif-title {
+        font-size: 0.78rem;
+        color: var(--color-text);
+        line-height: 1.4;
+    }
+
+    .notif-meta {
+        font-size: 0.7rem;
+        color: var(--color-text-muted);
+        margin-top: 2px;
+        font-family: monospace;
+    }
+
+    .notif-dismiss-btn {
+        background: none;
+        border: none;
+        color: var(--color-text-muted);
+        cursor: pointer;
+        font-size: 0.85rem;
+        padding: 2px 4px;
+        border-radius: 4px;
+        line-height: 1;
+        flex-shrink: 0;
+        transition: background 0.12s, color 0.12s;
+        margin-top: 1px;
+    }
+    .notif-dismiss-btn:hover { background: var(--color-danger-lt); color: var(--color-danger); }
+
+    .notif-panel-footer {
+        border-top: 1px solid var(--color-border);
+        padding: 8px 14px;
+        flex-shrink: 0;
+    }
+    .notif-panel-footer a {
+        font-size: 0.75rem;
+        color: var(--color-primary);
+        text-decoration: none;
+        font-weight: 500;
+    }
+    .notif-panel-footer a:hover { text-decoration: underline; }

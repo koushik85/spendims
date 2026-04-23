@@ -2,7 +2,6 @@ package com.spendilizer.controller;
 
 import com.spendilizer.config.CustomUserDetails;
 import com.spendilizer.entity.Customer;
-import com.spendilizer.entity.Status;
 import com.spendilizer.entity.User;
 import com.spendilizer.service.CustomerService;
 import com.spendilizer.service.UserService;
@@ -11,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.util.Arrays;
 
 @Controller
 @RequestMapping("/customer")
@@ -58,7 +55,6 @@ public class CustomerController {
         Customer customer = customerService.getById(id, resolveUser(principal))
                 .orElseThrow(() -> new RuntimeException("Customer not found: " + id));
         model.addAttribute("customer", customer);
-        model.addAttribute("statuses", Arrays.asList(Status.values()));
         return "ims/customer/form";
     }
 

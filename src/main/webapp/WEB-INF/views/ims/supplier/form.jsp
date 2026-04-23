@@ -108,21 +108,6 @@
                                       placeholder="Street, City, State, PIN…">${supplier.address}</textarea>
                         </div>
 
-                        <%-- Status (edit only) --%>
-                        <c:if test="${not empty supplier.id}">
-                            <div class="form-group">
-                                <label for="rowStatus">Status <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select id="rowStatus" name="rowStatus">
-                                        <c:forEach var="s" items="${statuses}">
-                                            <option value="${s}" ${supplier.rowStatus == s ? 'selected' : ''}>${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="field-hint">Inactive suppliers won't appear in purchase forms.</div>
-                            </div>
-                        </c:if>
-
                         <div class="form-divider"></div>
 
                         <div class="form-actions">

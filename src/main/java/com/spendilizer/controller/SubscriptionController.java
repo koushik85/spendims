@@ -11,9 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Controller
 @RequestMapping("/personal/subscriptions")
 public class SubscriptionController {
@@ -34,6 +31,7 @@ public class SubscriptionController {
         model.addAttribute("subscriptions", subscriptionService.getAll(user));
         model.addAttribute("monthlyCost", subscriptionService.totalMonthlyCost(user));
         model.addAttribute("activeCount", subscriptionService.getActive(user).size());
+        model.addAttribute("notifications", subscriptionService.getActiveNotifications(user));
         model.addAttribute("cycles", BillingCycle.values());
         model.addAttribute("categories", SubscriptionCategory.values());
         return "personal/subscriptions/list";
@@ -104,6 +102,23 @@ public class SubscriptionController {
         User user = userService.getUserByEmail(principal.getUsername());
         subscriptionService.delete(id, user);
         ra.addFlashAttribute("success", "Subscription deleted.");
+        return "redirect:/personal/subscriptions";
+    }
+
+    // ── Notification endpoints ────────────────────────────────────────
+
+    @PostMapping("/notifications/{notifId}/remove")
+    public String removeNotification(@PathVariable Long notifId,
+                                     @AuthenticationPrincipal CustomUserDetails principal) {
+        User user = userService.getUserByEmail(principal.getUsername());
+        subscriptionService.removeNotification(notifId, user);
+        return "redirect:/personal/subscriptions";
+    }
+
+    @PostMapping("/notifications/dismiss-all")
+    public String dismissAll(@AuthenticationPrincipal CustomUserDetails principal) {
+        User user = userService.getUserByEmail(principal.getUsername());
+        subscriptionService.removeAllNotifications(user);
         return "redirect:/personal/subscriptions";
     }
 }

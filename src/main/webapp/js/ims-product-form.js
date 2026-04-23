@@ -63,6 +63,7 @@
     const hsnInput         = document.getElementById('hsnSearch');
     const hsnIdInput       = document.getElementById('hsnId');
     const generateSkuBtn   = document.getElementById('generateSkuBtn');
+    const form             = productNameInput ? productNameInput.closest('form') : null;
 
     if (!categorySelect || !productNameInput || !skuInput) return;
 
@@ -107,10 +108,9 @@
         categorySelect.required = isMasterMode ? false : categoryRequiredDefault;
 
         if (supplierSelect) {
-            // Supplier stays editable in master mode so store owners can override vendor mapping.
+            // Supplier stays editable because it is user-specific.
             supplierSelect.disabled = false;
             supplierSelect.required = supplierRequiredDefault;
-            if (!isMasterMode) removeTemporaryOptions(supplierSelect);
         }
         if (!isMasterMode) {
             removeTemporaryOptions(categorySelect);
@@ -137,12 +137,9 @@
         skuInput.value = '';
         if (descriptionInput) descriptionInput.value = selectedOption.dataset.description || '';
 
-        const supplierName = selectedOption.dataset.supplier || '';
         const hsnCode = selectedOption.dataset.hsn || '';
 
         selectOrInjectOptionByText(categorySelect, categoryName, '__master__');
-        // -1 keeps form binding numeric while signaling "use master supplier fallback" on backend.
-        selectOrInjectOptionByText(supplierSelect, supplierName, -1);
 
         if (hsnInput) hsnInput.value = hsnCode;
         if (hsnIdInput) hsnIdInput.value = '';
@@ -177,7 +174,19 @@
 
     if (masterProductSelect) {
         masterProductSelect.addEventListener('change', applyMasterSelection);
+        masterProductSelect.addEventListener('change', () => masterProductSelect.setCustomValidity(''));
         applyMasterSelection();
+    }
+
+    if (form && masterProductSelect) {
+        form.addEventListener('submit', function (event) {
+            if (masterProductSelect.disabled) return;
+            if (!masterProductSelect.value) {
+                event.preventDefault();
+                masterProductSelect.setCustomValidity('Please select a master product before creating.');
+                masterProductSelect.reportValidity();
+            }
+        });
     }
 
     categorySelect.addEventListener('change', fetchGeneratedSku);

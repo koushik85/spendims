@@ -75,6 +75,13 @@
                         </div>
 
                         <div class="form-group">
+                            <label>Customer ID</label>
+                            <input type="text" value="${profileUser.customerId}" disabled
+                                   style="font-family:monospace;letter-spacing:1px;">
+                            <div class="field-hint">Your unique account identifier — embedded in all your product SKUs.</div>
+                        </div>
+
+                        <div class="form-group">
                             <label for="pan">PAN <span class="optional">optional</span></label>
                             <input type="text" id="pan" name="pan"
                                    value="${profileUser.pan}"

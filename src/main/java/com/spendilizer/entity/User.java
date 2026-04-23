@@ -32,6 +32,9 @@ public class User {
     @Column(name = "pan", length = 10)
     private String pan;
 
+    @Column(name = "customer_id", length = 9, unique = true)
+    private String customerId;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "enterprise_id", nullable = true)
     private Enterprise enterprise;
@@ -54,6 +57,9 @@ public class User {
 
     public String getPan() { return pan; }
     public void setPan(String pan) { this.pan = pan; }
+
+    public String getCustomerId() { return customerId; }
+    public void setCustomerId(String customerId) { this.customerId = customerId; }
 
     public Enterprise getEnterprise() { return enterprise; }
     public void setEnterprise(Enterprise enterprise) { this.enterprise = enterprise; }

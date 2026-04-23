@@ -5,6 +5,7 @@ import com.spendilizer.entity.Status;
 import com.spendilizer.entity.User;
 import com.spendilizer.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,44 +14,51 @@ import java.util.Optional;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
-    private final UserService userService;
 
-    public CategoryService(CategoryRepository categoryRepository, UserService userService) {
+    public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-        this.userService = userService;
     }
 
-    public Category createCategory(Category category, User user) {
-        List<User> scopeUsers = userService.getScopeUsers(user);
-        if (categoryRepository.existsByNameIgnoreCaseAndCreatedByInAndRowStatus(
-                category.getName(), scopeUsers, Status.ACTIVE)) {
-            throw new IllegalArgumentException(
-                    "A category named \"" + category.getName() + "\" already exists in your workspace.");
-        }
-        category.setCreatedBy(user);
-        return categoryRepository.save(category);
-    }
+    // ── Read (global — visible to all users) ────────────────────────
 
     public List<Category> getAllActiveCategory(User user) {
-        return categoryRepository.findAllByRowStatusAndCreatedByIn(Status.ACTIVE, userService.getScopeUsers(user));
+        return categoryRepository.findAllByRowStatus(Status.ACTIVE);
     }
 
     public List<Category> getActiveCategories(User user) {
         return getAllActiveCategory(user);
     }
 
-    public Optional<Category> getCategoryById(Long id, User user) {
-        return categoryRepository.findByIdAndCreatedByIn(id, userService.getScopeUsers(user));
+    public List<Category> getAllActiveCategory() {
+        return categoryRepository.findAllByRowStatus(Status.ACTIVE);
     }
 
-    public Category updateCategory(Long id, Category updatedCategory, User user) {
-        Category existing = getCategoryById(id, user)
-                .orElseThrow(() -> new RuntimeException("Category not found: " + id));
-        List<User> scopeUsers = userService.getScopeUsers(user);
-        if (categoryRepository.existsByNameIgnoreCaseAndCreatedByInAndRowStatusAndIdNot(
-                updatedCategory.getName(), scopeUsers, Status.ACTIVE, id)) {
+    public List<Category> getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    // ── Admin CRUD (SUPER_ADMIN only) ────────────────────────────────
+
+    public Category adminCreateCategory(Category category, User admin) {
+        if (categoryRepository.existsByNameIgnoreCaseAndRowStatus(category.getName(), Status.ACTIVE)) {
             throw new IllegalArgumentException(
-                    "A category named \"" + updatedCategory.getName() + "\" already exists in your workspace.");
+                    "A category named \"" + category.getName() + "\" already exists.");
+        }
+        category.setCreatedBy(admin);
+        return categoryRepository.save(category);
+    }
+
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
+    }
+
+    public Category adminUpdateCategory(Long id, Category updatedCategory) {
+        Category existing = getCategoryById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found: " + id));
+        if (categoryRepository.existsByNameIgnoreCaseAndRowStatusAndIdNot(
+                updatedCategory.getName(), Status.ACTIVE, id)) {
+            throw new IllegalArgumentException(
+                    "A category named \"" + updatedCategory.getName() + "\" already exists.");
         }
         existing.setName(updatedCategory.getName());
         existing.setDescription(updatedCategory.getDescription());
@@ -58,10 +66,28 @@ public class CategoryService {
         return categoryRepository.save(existing);
     }
 
-    public void softDeleteCategory(Long id, User user) {
-        Category existing = getCategoryById(id, user)
+    public void adminSoftDeleteCategory(Long id) {
+        Category existing = getCategoryById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found: " + id));
         existing.setRowStatus(Status.DELETED);
         categoryRepository.save(existing);
+    }
+
+    // ── Legacy scoped methods (kept for backward compatibility) ──────
+
+    public Category createCategory(Category category, User user) {
+        return adminCreateCategory(category, user);
+    }
+
+    public Optional<Category> getCategoryById(Long id, User user) {
+        return getCategoryById(id);
+    }
+
+    public Category updateCategory(Long id, Category updatedCategory, User user) {
+        return adminUpdateCategory(id, updatedCategory);
+    }
+
+    public void softDeleteCategory(Long id, User user) {
+        adminSoftDeleteCategory(id);
     }
 }

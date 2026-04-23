@@ -18,6 +18,10 @@ public class Enterprise {
     @JoinColumn(name = "owner_user_id")
     private User owner;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "approval_status", nullable = false, length = 20)
+    private ApprovalStatus approvalStatus = ApprovalStatus.PENDING;
+
     public Enterprise() {}
 
     public Enterprise(String enterpriseName, User owner) {
@@ -33,4 +37,7 @@ public class Enterprise {
 
     public User getOwner() { return owner; }
     public void setOwner(User owner) { this.owner = owner; }
+
+    public ApprovalStatus getApprovalStatus() { return approvalStatus; }
+    public void setApprovalStatus(ApprovalStatus approvalStatus) { this.approvalStatus = approvalStatus; }
 }

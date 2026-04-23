@@ -1,5 +1,6 @@
 package com.spendilizer.service;
 
+import com.spendilizer.entity.ApprovalStatus;
 import com.spendilizer.entity.Enterprise;
 import com.spendilizer.entity.GroupMember;
 import com.spendilizer.entity.Roles;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class UserService {
@@ -54,10 +56,50 @@ public class UserService {
      * - Enterprise  → every user sharing the same enterprise (owner + all members)
      */
     public List<User> getScopeUsers(User user) {
+        if ("SUPER_ADMIN".equals(user.getAccountType())) {
+            return userRepository.findAll();
+        }
         if (user.getEnterprise() == null) {
             return List.of(user);
         }
         return userRepository.findByEnterprise(user.getEnterprise());
+    }
+
+    @Transactional
+    public void registerSuperAdmin(String email, String firstName, String lastName, String rawPassword) {
+        User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
+        user.setAccountType("SUPER_ADMIN");
+        user.setCustomerId(freshCustomerId());
+        User saved = userRepository.save(user);
+        assignRole(saved, "SUPER_ADMIN");
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public List<Enterprise> getPendingEnterprises() {
+        return enterpriseRepository.findAllByApprovalStatus(ApprovalStatus.PENDING);
+    }
+
+    public List<Enterprise> getAllEnterprises() {
+        return enterpriseRepository.findAll();
+    }
+
+    @Transactional
+    public void approveEnterprise(int enterpriseId) {
+        enterpriseRepository.findById(enterpriseId).ifPresent(e -> {
+            e.setApprovalStatus(ApprovalStatus.APPROVED);
+            enterpriseRepository.save(e);
+        });
+    }
+
+    @Transactional
+    public void rejectEnterprise(int enterpriseId) {
+        enterpriseRepository.findById(enterpriseId).ifPresent(e -> {
+            e.setApprovalStatus(ApprovalStatus.REJECTED);
+            enterpriseRepository.save(e);
+        });
     }
 
     @Transactional
@@ -66,6 +108,7 @@ public class UserService {
         User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
         user.setAccountType("INDIVIDUAL");
         if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
+        user.setCustomerId(freshCustomerId());
         User saved = userRepository.save(user);
         assignRole(saved, "USER");
         linkPendingGroupMembers(saved);
@@ -77,9 +120,11 @@ public class UserService {
         User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
         user.setAccountType("ENTERPRISE_OWNER");
         if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
+        user.setCustomerId(freshCustomerId());
         User savedUser = userRepository.save(user);
 
         Enterprise enterprise = new Enterprise(enterpriseName, savedUser);
+        enterprise.setApprovalStatus(ApprovalStatus.PENDING);
         Enterprise savedEnterprise = enterpriseRepository.save(enterprise);
 
         savedUser.setEnterprise(savedEnterprise);
@@ -95,6 +140,7 @@ public class UserService {
         User member = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
         member.setAccountType("ENTERPRISE_MEMBER");
         member.setEnterprise(enterprise);
+        member.setCustomerId(freshCustomerId());
         User saved = userRepository.save(member);
         assignRole(saved, "ENTERPRISE_MEMBER");
         linkPendingGroupMembers(saved);
@@ -148,6 +194,26 @@ public class UserService {
         }
         user.setPassword(passwordEncoder.encode(newRaw));
         userRepository.save(user);
+    }
+
+    /** Generates a unique 9-digit customer ID and persists it on the user. */
+    @Transactional
+    public String generateAndPersistCustomerId(User user) {
+        String id;
+        do {
+            id = String.valueOf(ThreadLocalRandom.current().nextLong(100_000_000L, 1_000_000_000L));
+        } while (userRepository.existsByCustomerId(id));
+        user.setCustomerId(id);
+        userRepository.save(user);
+        return id;
+    }
+
+    private String freshCustomerId() {
+        String id;
+        do {
+            id = String.valueOf(ThreadLocalRandom.current().nextLong(100_000_000L, 1_000_000_000L));
+        } while (userRepository.existsByCustomerId(id));
+        return id;
     }
 
     private void assignRole(User user, String roleName) {

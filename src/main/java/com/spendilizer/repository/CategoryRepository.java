@@ -13,6 +13,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAllByCreatedByIn(List<User> users);
     Optional<Category> findByIdAndCreatedByIn(Long id, List<User> users);
 
+    // Global queries (no user scope — for SUPER_ADMIN-managed categories)
+    List<Category> findAllByRowStatus(Status rowStatus);
+    Optional<Category> findByIdAndRowStatus(Long id, Status rowStatus);
+    boolean existsByNameIgnoreCaseAndRowStatus(String name, Status rowStatus);
+    boolean existsByNameIgnoreCaseAndRowStatusAndIdNot(String name, Status rowStatus, Long id);
+
     // Duplicate-name checks scoped to the user's enterprise / individual scope
     boolean existsByNameIgnoreCaseAndCreatedByInAndRowStatus(
             String name, List<User> createdBy, Status rowStatus);
@@ -22,4 +28,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     Optional<Category> findFirstByNameIgnoreCaseAndCreatedByInAndRowStatus(
             String name, List<User> users, Status rowStatus);
+
+        Optional<Category> findFirstByNameIgnoreCaseAndRowStatus(String name, Status rowStatus);
+
+        Optional<Category> findFirstByNameIgnoreCase(String name);
 }

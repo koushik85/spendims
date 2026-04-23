@@ -90,20 +90,6 @@
                                       placeholder="Brief description of this category…">${category.description}</textarea>
                         </div>
 
-                        <c:if test="${not empty category.id}">
-                            <div class="form-group">
-                                <label for="rowStatus">Status <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select id="rowStatus" name="rowStatus">
-                                        <c:forEach var="s" items="${statuses}">
-                                            <option value="${s}" ${category.rowStatus == s ? 'selected' : ''}>${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="field-hint">Inactive categories won't appear in product forms.</div>
-                            </div>
-                        </c:if>
-
                         <div class="form-divider"></div>
 
                         <div class="form-actions">

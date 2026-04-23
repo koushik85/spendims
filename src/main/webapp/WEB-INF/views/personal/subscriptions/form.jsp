@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label for="billingCycle">Billing Cycle <span class="required">*</span></label>
                         <div class="select-wrapper">
-                            <select id="billingCycle" name="billingCycle" required>
+                            <select id="billingCycle" name="billingCycle" required onchange="updateNextBillingPreview()">
                                 <c:forEach var="c" items="${cycles}">
                                     <option value="${c}" ${subscription.billingCycle == c ? 'selected' : ''}>${c}</option>
                                 </c:forEach>
@@ -79,12 +79,19 @@
                     <div class="form-group">
                         <label for="startDate">Start Date <span class="required">*</span></label>
                         <input type="date" id="startDate" name="startDate"
-                               value="${subscription.startDate}" required>
+                               value="${subscription.startDate}" required
+                               onchange="updateNextBillingPreview()">
+                        <div class="field-hint">The date you first subscribed.</div>
                     </div>
                     <div class="form-group">
-                        <label for="nextBillingDate">Next Billing Date <span class="required">*</span></label>
-                        <input type="date" id="nextBillingDate" name="nextBillingDate"
-                               value="${subscription.nextBillingDate}" required>
+                        <label>Next Billing Date</label>
+                        <div id="nextBillingPreview" style="padding:9px 12px;background:var(--color-bg);border:1px solid var(--color-border);border-radius:var(--radius-md);font-family:monospace;font-size:0.88rem;color:var(--color-text-muted);min-height:40px;">
+                            <c:choose>
+                                <c:when test="${not empty subscription.nextBillingDate}">${subscription.nextBillingDate}</c:when>
+                                <c:otherwise>Set start date &amp; cycle to preview</c:otherwise>
+                            </c:choose>
+                        </div>
+                        <div class="field-hint">Auto-calculated from start date &amp; cycle.</div>
                     </div>
                 </div>
 
@@ -138,5 +145,35 @@
 </div>
 </div>
 </div>
+
+<script>
+    const CYCLE_DAYS = { WEEKLY: 7, MONTHLY: 30, QUARTERLY: 91, YEARLY: 365 };
+
+    function updateNextBillingPreview() {
+        const startVal = document.getElementById('startDate').value;
+        const cycle    = document.getElementById('billingCycle').value;
+        const preview  = document.getElementById('nextBillingPreview');
+
+        if (!startVal || !cycle) { preview.textContent = 'Set start date & cycle to preview'; return; }
+
+        let next = new Date(startVal + 'T00:00:00');
+        const today = new Date(); today.setHours(0,0,0,0);
+
+        while (next <= today) {
+            if (cycle === 'WEEKLY')    next.setDate(next.getDate() + 7);
+            else if (cycle === 'MONTHLY')   next.setMonth(next.getMonth() + 1);
+            else if (cycle === 'QUARTERLY') next.setMonth(next.getMonth() + 3);
+            else if (cycle === 'YEARLY')    next.setFullYear(next.getFullYear() + 1);
+        }
+
+        const yyyy = next.getFullYear();
+        const mm   = String(next.getMonth() + 1).padStart(2, '0');
+        const dd   = String(next.getDate()).padStart(2, '0');
+        preview.textContent = yyyy + '-' + mm + '-' + dd;
+    }
+
+    // Run on load if values already present (edit mode)
+    window.addEventListener('DOMContentLoaded', updateNextBillingPreview);
+</script>
 </body>
 </html>

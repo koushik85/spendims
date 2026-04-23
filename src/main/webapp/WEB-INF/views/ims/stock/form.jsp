@@ -120,21 +120,6 @@
                             Current quantity is at or below the minimum threshold — this item will be flagged as low stock.
                         </div>
 
-                        <%-- Status — edit mode only --%>
-                        <c:if test="${not empty stock.id}">
-                            <div class="form-group" style="margin-top: 22px;">
-                                <label for="rowStatus">Status <span class="required">*</span></label>
-                                <div class="select-wrapper">
-                                    <select id="rowStatus" name="rowStatus">
-                                        <c:forEach var="s" items="${statuses}">
-                                            <option value="${s}" ${stock.rowStatus == s ? 'selected' : ''}>${s}</option>
-                                        </c:forEach>
-                                    </select>
-                                </div>
-                                <div class="field-hint">Inactive entries are hidden from reports.</div>
-                            </div>
-                        </c:if>
-
                         <div class="form-divider"></div>
 
                         <div class="form-actions">
