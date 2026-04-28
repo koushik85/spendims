@@ -1,6 +1,6 @@
 /* ============================================================
    IMS — Unified Shared Stylesheet  v2.0
-   Usage: <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+   Usage: <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
    Remove ALL inline <style> blocks from every JSP and use this file.
    ============================================================ */
 

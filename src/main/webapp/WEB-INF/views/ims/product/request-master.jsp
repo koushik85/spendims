@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Request Master Product - IMS</title>
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -17,9 +17,9 @@
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">&#8250;</span>
-                <a href="/spendilizer/product">Products</a>
+                <a href="${pageContext.request.contextPath}/product">Products</a>
                 <span class="sep">&#8250;</span>
                 <span class="current">Request Master Product</span>
             </div>
@@ -43,7 +43,7 @@
             <div class="form-card" style="max-width: 760px;">
                 <div class="form-card-header">Product Request Details</div>
                 <div class="form-card-body">
-                    <form method="post" action="/spendilizer/product/request-master">
+                    <form method="post" action="${pageContext.request.contextPath}/product/request-master">
                         <div class="form-grid">
                             <div class="form-group">
                                 <label for="name">Product Name <span class="required">*</span></label>
@@ -78,7 +78,7 @@
 
                         <div class="form-actions">
                             <button type="submit" class="btn-save">Submit Request</button>
-                            <a href="/spendilizer/product" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/product" class="btn-cancel">Cancel</a>
                         </div>
                     </form>
                 </div>
@@ -88,6 +88,6 @@
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-product-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-product-form.js"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Spendilizer — Sign Up</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-login.css">
     <style>
         /* ── Account-type selector ── */
         .type-selector {
@@ -173,7 +173,7 @@
             Business accounts require Super Admin approval before you can sign in. You will receive access once your account is reviewed.
         </div>
 
-        <form action="/spendilizer/signup" method="post" id="signupForm">
+        <form action="${pageContext.request.contextPath}/signup" method="post" id="signupForm">
             <input type="hidden" name="accountType" id="accountTypeInput"
                    value="${empty activeTab || activeTab == 'INDIVIDUAL' ? 'INDIVIDUAL' : 'ENTERPRISE'}">
 
@@ -289,7 +289,7 @@
         </form>
 
         <div class="signup-footer-note">
-            Already have an account? <a href="/spendilizer/login">Sign in</a>
+            Already have an account? <a href="${pageContext.request.contextPath}/login">Sign in</a>
         </div>
 
         <div class="login-footer">
@@ -299,7 +299,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/spendilizer/js/ims-shared.js"></script>
-<script src="/spendilizer/js/ims-signup.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-signup.js"></script>
 </body>
 </html>

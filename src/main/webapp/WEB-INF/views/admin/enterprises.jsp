@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprises — Admin</title>
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -61,10 +61,10 @@
                                 <td>
                                     <c:if test="${e.approvalStatus == 'PENDING'}">
                                         <div class="flex-gap-6">
-                                            <form method="post" action="/spendilizer/admin/enterprises/${e.enterpriseId}/approve">
+                                            <form method="post" action="${pageContext.request.contextPath}/admin/enterprises/${e.enterpriseId}/approve">
                                                 <button class="btn-action btn-adjust-plus">Approve</button>
                                             </form>
-                                            <form method="post" action="/spendilizer/admin/enterprises/${e.enterpriseId}/reject">
+                                            <form method="post" action="${pageContext.request.contextPath}/admin/enterprises/${e.enterpriseId}/reject">
                                                 <button class="btn-action btn-delete">Reject</button>
                                             </form>
                                         </div>

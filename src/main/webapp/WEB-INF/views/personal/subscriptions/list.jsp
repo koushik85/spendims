@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Subscriptions — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
     <style>
         .sub-card { background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:20px;transition:box-shadow 0.18s;height:100%; }
         .sub-card:hover { box-shadow:var(--shadow-md); }
@@ -50,7 +50,7 @@
             <h2>Subscriptions</h2>
             <div class="page-subtitle">Track your recurring payments</div>
         </div>
-        <a href="/spendilizer/personal/subscriptions/new" class="btn-primary-custom">
+        <a href="${pageContext.request.contextPath}/personal/subscriptions/new" class="btn-primary-custom">
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
             </svg>
@@ -74,7 +74,7 @@
                     </svg>
                     Upcoming Renewals
                 </div>
-                <form action="/spendilizer/personal/subscriptions/notifications/dismiss-all" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/personal/subscriptions/notifications/dismiss-all" method="post" style="margin:0;">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <button type="submit" style="font-size:0.72rem;background:none;border:1px solid #fde047;border-radius:5px;padding:3px 10px;color:#854d0e;cursor:pointer;">Dismiss all</button>
                 </form>
@@ -93,7 +93,7 @@
                             &nbsp;·&nbsp; <span style="font-family:monospace;">&#8377;<fmt:formatNumber value="${n.subscription.amount}" pattern="#,##0.00"/></span>
                             &nbsp;·&nbsp; <span style="color:var(--color-text-muted);">${n.subscription.nextBillingDate}</span>
                         </div>
-                        <form action="/spendilizer/personal/subscriptions/notifications/${n.id}/remove" method="post" style="margin:0;">
+                        <form action="${pageContext.request.contextPath}/personal/subscriptions/notifications/${n.id}/remove" method="post" style="margin:0;">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                             <button type="submit" title="Dismiss" style="background:none;border:none;cursor:pointer;color:#a16207;font-size:1rem;line-height:1;padding:0 4px;">&#x2715;</button>
                         </form>
@@ -129,7 +129,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
                     <p>No subscriptions yet.</p>
-                    <a href="/spendilizer/personal/subscriptions/new" class="btn-primary-custom">Add your first subscription</a>
+                    <a href="${pageContext.request.contextPath}/personal/subscriptions/new" class="btn-primary-custom">Add your first subscription</a>
                 </div>
             </div>
         </c:when>
@@ -167,27 +167,27 @@
                             </div>
 
                             <div class="sub-actions">
-                                <a href="/spendilizer/personal/subscriptions/${s.id}/edit">Edit</a>
+                                <a href="${pageContext.request.contextPath}/personal/subscriptions/${s.id}/edit">Edit</a>
                                 <c:if test="${s.status == 'ACTIVE'}">
-                                    <form action="/spendilizer/personal/subscriptions/${s.id}/status" method="post">
+                                    <form action="${pageContext.request.contextPath}/personal/subscriptions/${s.id}/status" method="post">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                         <input type="hidden" name="status" value="PAUSED">
                                         <button type="submit">Pause</button>
                                     </form>
-                                    <form action="/spendilizer/personal/subscriptions/${s.id}/status" method="post">
+                                    <form action="${pageContext.request.contextPath}/personal/subscriptions/${s.id}/status" method="post">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                         <input type="hidden" name="status" value="CANCELLED">
                                         <button type="submit" onclick="return confirm('Cancel this subscription?')">Cancel</button>
                                     </form>
                                 </c:if>
                                 <c:if test="${s.status == 'PAUSED' || s.status == 'CANCELLED'}">
-                                    <form action="/spendilizer/personal/subscriptions/${s.id}/status" method="post">
+                                    <form action="${pageContext.request.contextPath}/personal/subscriptions/${s.id}/status" method="post">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                         <input type="hidden" name="status" value="ACTIVE">
                                         <button type="submit" style="color:var(--color-success);border-color:var(--color-success);">Reactivate</button>
                                     </form>
                                 </c:if>
-                                <form action="/spendilizer/personal/subscriptions/${s.id}/delete" method="post">
+                                <form action="${pageContext.request.contextPath}/personal/subscriptions/${s.id}/delete" method="post">
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                     <button type="submit" style="color:var(--color-danger);border-color:var(--color-danger);"
                                             onclick="return confirm('Delete this subscription?')">Delete</button>

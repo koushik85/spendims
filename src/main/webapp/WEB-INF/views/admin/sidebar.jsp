@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
 <div id="sidebar-wrapper" class="sidebar-admin">
 
@@ -10,7 +10,7 @@
     </div>
 
     <div class="sidebar-section-label">Overview</div>
-    <a href="/spendilizer/admin/dashboard"
+    <a href="${pageContext.request.contextPath}/admin/dashboard"
        class="nav-link ${fn:contains(currentUri, '/admin/dashboard') ? 'active' : ''}">
         <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -20,7 +20,7 @@
     </a>
 
     <div class="sidebar-section-label">Catalog</div>
-    <a href="/spendilizer/admin/categories"
+    <a href="${pageContext.request.contextPath}/admin/categories"
        class="nav-link ${fn:contains(currentUri, '/admin/categories') ? 'active' : ''}">
         <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -28,7 +28,7 @@
         </svg>
         Categories
     </a>
-    <a href="/spendilizer/admin/master-products"
+    <a href="${pageContext.request.contextPath}/admin/master-products"
        class="nav-link ${fn:contains(currentUri, '/admin/master-products') && !fn:contains(currentUri, '/requests') ? 'active' : ''}">
         <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -36,7 +36,7 @@
         </svg>
         Master Products
     </a>
-    <a href="/spendilizer/admin/master-products/requests"
+    <a href="${pageContext.request.contextPath}/admin/master-products/requests"
        class="nav-link ${fn:contains(currentUri, '/requests') ? 'active' : ''}">
         <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -46,7 +46,7 @@
     </a>
 
     <div class="sidebar-section-label">Users</div>
-    <a href="/spendilizer/admin/enterprises"
+    <a href="${pageContext.request.contextPath}/admin/enterprises"
        class="nav-link ${fn:contains(currentUri, '/admin/enterprises') ? 'active' : ''}">
         <svg class="nav-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round"

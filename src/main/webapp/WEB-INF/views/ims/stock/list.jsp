@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Stock — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -20,7 +20,7 @@
                     <h2>Stock</h2>
                     <div class="page-subtitle">Monitor and manage inventory levels</div>
                 </div>
-                <a href="/spendilizer/stock/new" class="btn-primary-custom">
+                <a href="${pageContext.request.contextPath}/stock/new" class="btn-primary-custom">
                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -129,7 +129,7 @@
                                     <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
 
                                         <%-- Quick adjust +1 --%>
-                                        <form action="/spendilizer/stock/adjust/${s.id}" method="post" style="margin:0;">
+                                        <form action="${pageContext.request.contextPath}/stock/adjust/${s.id}" method="post" style="margin:0;">
                                             <input type="hidden" name="delta" value="1">
                                             <input type="hidden" name="note" value="Quick +1 adjustment">
                                             <button type="submit" class="btn-action btn-adjust-plus" title="Add 1 unit">
@@ -141,7 +141,7 @@
                                         </form>
 
                                         <%-- Quick adjust -1 --%>
-                                        <form action="/spendilizer/stock/adjust/${s.id}" method="post" style="margin:0;">
+                                        <form action="${pageContext.request.contextPath}/stock/adjust/${s.id}" method="post" style="margin:0;">
                                             <input type="hidden" name="delta" value="-1">
                                             <input type="hidden" name="note" value="Quick -1 adjustment">
                                             <button type="submit" class="btn-action btn-adjust-minus" title="Remove 1 unit">
@@ -160,7 +160,7 @@
                                         </button>
 
                                         <%-- Edit --%>
-                                        <a href="/spendilizer/stock/edit/${s.id}" class="btn-action btn-edit">
+                                        <a href="${pageContext.request.contextPath}/stock/edit/${s.id}" class="btn-action btn-edit">
                                             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a4 4 0 01-1.414.586l-3 .586.586-3a4 4 0 01.586-1.414z"/>
                                             </svg>
@@ -168,7 +168,7 @@
                                         </a>
 
                                         <%-- Deactivate --%>
-                                        <form action="/spendilizer/stock/delete/${s.id}" method="post" style="margin:0;"
+                                        <form action="${pageContext.request.contextPath}/stock/delete/${s.id}" method="post" style="margin:0;"
                                               onsubmit="return confirm('Deactivate this stock entry?')">
                                             <button type="submit" class="btn-action btn-delete">
                                                 <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -190,7 +190,7 @@
                                         <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
                                         </svg>
-                                        <p>No stock entries found. <a href="/spendilizer/stock/new" style="color: var(--color-primary);">Add one now.</a></p>
+                                        <p>No stock entries found. <a href="${pageContext.request.contextPath}/stock/new" style="color: var(--color-primary);">Add one now.</a></p>
                                     </div>
                                 </td>
                             </tr>
@@ -245,7 +245,7 @@
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-stock-list.js"></script>
-<script src="/spendilizer/js/ims-shared.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-stock-list.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
 </body>
 </html>

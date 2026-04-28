@@ -16,40 +16,40 @@ import java.util.Collection;
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
+	private static final Logger logger = LoggerFactory.getLogger(CustomAuthenticationSuccessHandler.class);
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+			Authentication authentication) throws IOException, ServletException {
 
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Collection<? extends GrantedAuthority> roles = userDetails.getAuthorities();
 
-        logger.info("AUTH_SUCCESS email={} roles={} ip={}",
-            userDetails.getUsername(),
-            roles.stream().map(GrantedAuthority::getAuthority).toList(),
-            resolveClientIp(request));
+		logger.info("AUTH_SUCCESS email={} roles={} ip={}", userDetails.getUsername(),
+				roles.stream().map(GrantedAuthority::getAuthority).toList(), resolveClientIp(request));
 
-        String accountType = userDetails.getUser().getAccountType();
-        if ("SUPER_ADMIN".equals(accountType)) {
-            request.getSession().setAttribute("currentModule", "ADMIN");
-            response.sendRedirect("/spendilizer/admin/dashboard");
-        } else if ("ENTERPRISE_OWNER".equals(accountType) || "ENTERPRISE_MEMBER".equals(accountType)) {
-            request.getSession().setAttribute("currentModule", "IMS");
-            response.sendRedirect("/spendilizer/dashboard");
-        } else {
-            request.getSession().setAttribute("currentModule", "PERSONAL");
-            response.sendRedirect("/spendilizer/personal/dashboard");
-        }
-    }
+		String accountType = userDetails.getUser().getAccountType();
+		String contextPath = request.getContextPath();
 
-    private String resolveClientIp(HttpServletRequest request) {
-        String forwardedFor = request.getHeader("X-Forwarded-For");
-        if (forwardedFor != null && !forwardedFor.isBlank()) {
-            return forwardedFor.split(",")[0].trim();
-        }
-        return request.getRemoteAddr();
-    }
+		if ("SUPER_ADMIN".equals(accountType)) {
+			request.getSession().setAttribute("currentModule", "ADMIN");
+			response.sendRedirect(contextPath + "/admin/dashboard");
+		} else if ("ENTERPRISE_OWNER".equals(accountType) || "ENTERPRISE_MEMBER".equals(accountType)) {
+			request.getSession().setAttribute("currentModule", "IMS");
+			response.sendRedirect(contextPath + "/dashboard");
+		} else {
+			request.getSession().setAttribute("currentModule", "PERSONAL");
+			response.sendRedirect(contextPath + "/personal/dashboard");
+		}
+	}
+
+	private String resolveClientIp(HttpServletRequest request) {
+		String forwardedFor = request.getHeader("X-Forwarded-For");
+		if (forwardedFor != null && !forwardedFor.isBlank()) {
+			return forwardedFor.split(",")[0].trim();
+		}
+		return request.getRemoteAddr();
+	}
 
 //    private void redirectBasedOnRole(String role, HttpServletResponse response) throws IOException {
 //        if ("ROLE_ADMIN".equals(role)) {
@@ -64,4 +64,3 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 //        }
 //    }
 }
-

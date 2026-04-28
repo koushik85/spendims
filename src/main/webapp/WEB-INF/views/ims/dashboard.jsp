@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -43,7 +43,7 @@
                     </svg>
                     <span>
                         <strong>${lowStockCount} product(s)</strong> are below minimum stock threshold.&nbsp;
-                        <a href="/spendilizer/stock">View stock &rarr;</a>
+                        <a href="${pageContext.request.contextPath}/stock">View stock &rarr;</a>
                     </span>
                 </div>
             </c:if>
@@ -195,7 +195,7 @@
             <div class="section-title">Quick actions</div>
             <div class="row g-2">
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/product/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/product/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
@@ -206,7 +206,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/supplier/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/supplier/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/>
@@ -217,7 +217,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/category/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/category/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
@@ -228,7 +228,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/stock-movement" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/stock-movement" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
@@ -239,7 +239,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/stock" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/stock" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
@@ -250,7 +250,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/product" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/product" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16"/>
@@ -261,7 +261,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/order/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/order/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
@@ -272,7 +272,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/invoice/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/invoice/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2m-3 7h3m-3 4h3"/>
@@ -283,7 +283,7 @@
                 </div>
 
                 <div class="col-12 col-sm-6 col-lg-3">
-                    <a href="/spendilizer/customer/new" class="quick-action">
+                    <a href="${pageContext.request.contextPath}/customer/new" class="quick-action">
                         <span class="qa-icon">
                             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
@@ -301,7 +301,7 @@
             <div class="activity-card">
                 <div class="activity-header">
                     <span>Latest movements</span>
-                    <a href="/spendilizer/stock-movement">View all &rarr;</a>
+                    <a href="${pageContext.request.contextPath}/stock-movement">View all &rarr;</a>
                 </div>
 
                 <table class="activity-table">

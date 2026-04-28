@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Customers — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -19,7 +19,7 @@
                     <h2>Customers</h2>
                     <div class="page-subtitle">Manage your customer records</div>
                 </div>
-                <a href="/spendilizer/customer/new" class="btn-primary-custom">
+                <a href="${pageContext.request.contextPath}/customer/new" class="btn-primary-custom">
                     <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
                     </svg>
@@ -78,13 +78,13 @@
                                 <td class="text-muted">${not empty c.gstin ? c.gstin : '—'}</td>
                                 <td>
                                     <div class="flex-gap-6">
-                                        <a href="/spendilizer/customer/edit/${c.id}" class="btn-action btn-edit">
+                                        <a href="${pageContext.request.contextPath}/customer/edit/${c.id}" class="btn-action btn-edit">
                                             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 012.828 2.828L11.828 15.828a4 4 0 01-1.414.586l-3 .586.586-3a4 4 0 01.586-1.414z"/>
                                             </svg>
                                             Edit
                                         </a>
-                                        <form action="/spendilizer/customer/delete/${c.id}" method="post" style="margin:0;"
+                                        <form action="${pageContext.request.contextPath}/customer/delete/${c.id}" method="post" style="margin:0;"
                                               onsubmit="return confirm('Delete this customer?')">
                                             <button type="submit" class="btn-action btn-delete">
                                                 <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -104,7 +104,7 @@
                                         <svg width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2h5M12 12a4 4 0 100-8 4 4 0 000 8z"/>
                                         </svg>
-                                        <p>No customers found. <a href="/spendilizer/customer/new" style="color:var(--color-primary);">Add one now.</a></p>
+                                        <p>No customers found. <a href="${pageContext.request.contextPath}/customer/new" style="color:var(--color-primary);">Add one now.</a></p>
                                     </div>
                                 </td>
                             </tr>
@@ -121,6 +121,6 @@
         </div>
     </div>
 </div>
-<script src="/spendilizer/js/ims-shared.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
 </body>
 </html>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Spendilizer — Login</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-login.css">
 </head>
 <body>
 
@@ -93,7 +93,7 @@
             </c:when>
         </c:choose>
 
-        <form action="/spendilizer/perform-login" method="post">
+        <form action="${pageContext.request.contextPath}/perform-login" method="post">
 
             <%-- Email --%>
             <div class="form-group">
@@ -151,7 +151,7 @@
 
         <div style="text-align:center;margin-top:18px;font-size:0.82rem;color:#64748b;">
             Don't have an account?
-            <a href="/spendilizer/signup"
+            <a href="${pageContext.request.contextPath}/signup"
                style="color:#0f766e;text-decoration:none;font-weight:600;">Sign up</a>
         </div>
 
@@ -163,6 +163,6 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/spendilizer/js/ims-shared.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
 </body>
 </html>

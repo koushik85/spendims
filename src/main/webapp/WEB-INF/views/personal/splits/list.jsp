@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Split Groups — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -22,7 +22,7 @@
             <h2>Split Expenses</h2>
             <div class="page-subtitle">Track shared expenses and settle up</div>
         </div>
-        <a href="/spendilizer/personal/splits/new" class="btn-primary-custom">
+        <a href="${pageContext.request.contextPath}/personal/splits/new" class="btn-primary-custom">
             <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
             </svg>
@@ -44,7 +44,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     <p>No split groups yet.</p>
-                    <a href="/spendilizer/personal/splits/new" class="btn-primary-custom">Create your first group</a>
+                    <a href="${pageContext.request.contextPath}/personal/splits/new" class="btn-primary-custom">Create your first group</a>
                 </div>
             </div>
         </c:when>
@@ -52,7 +52,7 @@
             <div class="row g-3">
                 <c:forEach var="g" items="${groups}">
                     <div class="col-12 col-md-6 col-lg-4">
-                        <a href="/spendilizer/personal/splits/${g.id}" style="text-decoration:none;">
+                        <a href="${pageContext.request.contextPath}/personal/splits/${g.id}" style="text-decoration:none;">
                             <div class="stat-card" style="cursor:pointer;transition:box-shadow 0.18s ease;border:1px solid var(--color-border);"
                                  onmouseover="this.style.boxShadow='var(--shadow-md)'"
                                  onmouseout="this.style.boxShadow=''">

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Split Group — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
     <style>
         .member-row {
             display: grid;
@@ -64,7 +64,7 @@
 <div class="main-content">
 
     <div class="breadcrumb-bar">
-        <a href="/spendilizer/personal/splits">Split Groups</a>
+        <a href="${pageContext.request.contextPath}/personal/splits">Split Groups</a>
         <span class="sep">›</span>
         <span class="current">New Group</span>
     </div>
@@ -74,7 +74,7 @@
         <div class="page-subtitle">Set up a group to track and split shared expenses</div>
     </div>
 
-    <form action="/spendilizer/personal/splits/new" method="post">
+    <form action="${pageContext.request.contextPath}/personal/splits/new" method="post">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
         <%-- Group details --%>
@@ -159,7 +159,7 @@
                         </svg>
                         Create Group
                     </button>
-                    <a href="/spendilizer/personal/splits" class="btn-cancel">Cancel</a>
+                    <a href="${pageContext.request.contextPath}/personal/splits" class="btn-cancel">Cancel</a>
                 </div>
 
             </div>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty stock.id ? 'Add Stock Entry' : 'Edit Stock Entry'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -17,9 +17,9 @@
 
             <%-- Breadcrumb --%>
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/stock">Stock</a>
+                <a href="${pageContext.request.contextPath}/stock">Stock</a>
                 <span class="sep">›</span>
                 <span class="current">${empty stock.id ? 'New Entry' : 'Edit Entry'}</span>
             </div>
@@ -54,7 +54,7 @@
                 <div class="form-card-header">Stock Details</div>
                 <div class="form-card-body">
 
-                    <form action="/spendilizer/stock/${empty stock.id ? 'new' : 'edit/'.concat(stock.id)}"
+                    <form action="${pageContext.request.contextPath}/stock/${empty stock.id ? 'new' : 'edit/'.concat(stock.id)}"
                           method="post">
 
                         <%-- Product selector --%>
@@ -129,7 +129,7 @@
                                 </svg>
                                 ${empty stock.id ? 'Create Entry' : 'Save Changes'}
                             </button>
-                            <a href="/spendilizer/stock" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/stock" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>
@@ -140,6 +140,6 @@
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-stock-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-stock-form.js"></script>
 </body>
 </html>

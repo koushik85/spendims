@@ -17,7 +17,7 @@ function fetchStockInfo(productId) {
     info.style.display = 'flex';
     text.textContent = 'Loading stock info…';
 
-    fetch('/spendilizer/stock/api/by-product/' + productId)
+    fetch(ctx + '/stock/api/by-product/' + productId)
         .then(r => r.ok ? r.json() : null)
         .then(data => {
             text.textContent = data

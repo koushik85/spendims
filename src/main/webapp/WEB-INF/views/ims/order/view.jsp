@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Order ${order.orderNumber} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -16,9 +16,9 @@
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/order">Orders</a>
+                <a href="${pageContext.request.contextPath}/order">Orders</a>
                 <span class="sep">›</span>
                 <span class="current">${order.orderNumber}</span>
             </div>
@@ -32,7 +32,7 @@
                     <div class="page-subtitle">Customer: <strong>${order.customer.displayName}</strong> &nbsp;·&nbsp; Date: ${order.orderDateFormatted}</div>
                 </div>
                 <c:if test="${order.status == 'DRAFT'}">
-                    <a href="/spendilizer/order/edit/${order.id}" class="btn-primary-custom">Edit Order</a>
+                    <a href="${pageContext.request.contextPath}/order/edit/${order.id}" class="btn-primary-custom">Edit Order</a>
                 </c:if>
             </div>
 
@@ -77,7 +77,7 @@
                 </c:if>
                 <%-- Invoice link whenever one exists --%>
                 <c:if test="${not empty linkedInvoice}">
-                    <a href="/spendilizer/invoice/${linkedInvoice.id}" class="btn-action-lg btn-print"
+                    <a href="${pageContext.request.contextPath}/invoice/${linkedInvoice.id}" class="btn-action-lg btn-print"
                        style="text-decoration:none;">
                         &#128196; Invoice ${linkedInvoice.invoiceNumber}
                         <span class="status-badge status-${linkedInvoice.status}" style="font-size:0.65rem;padding:2px 7px;margin-left:6px;">${linkedInvoice.status}</span>
@@ -98,7 +98,7 @@
                         <div class="detail-row">
                             <span class="detail-label">Invoice</span>
                             <span class="detail-value">
-                                <a href="/spendilizer/invoice/${linkedInvoice.id}" style="color:var(--color-primary);">
+                                <a href="${pageContext.request.contextPath}/invoice/${linkedInvoice.id}" style="color:var(--color-primary);">
                                     ${linkedInvoice.invoiceNumber}
                                 </a>
                             </span>
@@ -234,7 +234,7 @@
                         style="background:#f1f5f9;color:#475569;border:1px solid var(--color-border);">
                     Go Back
                 </button>
-                <form action="/spendilizer/order/${order.id}/confirm" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/order/${order.id}/confirm" method="post" style="margin:0;">
                     <button type="submit" class="btn-action-lg btn-confirm">
                         Yes, Confirm Order
                     </button>
@@ -277,7 +277,7 @@
                         style="background:#f1f5f9;color:#475569;border:1px solid var(--color-border);">
                     Go Back
                 </button>
-                <form action="/spendilizer/order/${order.id}/ship" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/order/${order.id}/ship" method="post" style="margin:0;">
                     <button type="submit" class="btn-action-lg btn-ship">Mark as Shipped</button>
                 </form>
             </div>
@@ -303,7 +303,7 @@
                 </div>
                 <c:if test="${not empty linkedInvoice}">
                     <div style="margin-top:14px;padding:10px 14px;background:#eff6ff;border-radius:6px;font-size:0.82rem;color:#1d4ed8;">
-                        &#128196; Invoice <a href="/spendilizer/invoice/${linkedInvoice.id}" style="color:#1d4ed8;font-weight:500;">${linkedInvoice.invoiceNumber}</a>
+                        &#128196; Invoice <a href="${pageContext.request.contextPath}/invoice/${linkedInvoice.id}" style="color:#1d4ed8;font-weight:500;">${linkedInvoice.invoiceNumber}</a>
                         is <span class="status-badge status-${linkedInvoice.status}" style="font-size:0.65rem;">${linkedInvoice.status}</span>
                         — remember to send it to the customer after delivery.
                     </div>
@@ -314,7 +314,7 @@
                         style="background:#f1f5f9;color:#475569;border:1px solid var(--color-border);">
                     Go Back
                 </button>
-                <form action="/spendilizer/order/${order.id}/deliver" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/order/${order.id}/deliver" method="post" style="margin:0;">
                     <button type="submit" class="btn-action-lg btn-deliver">Confirm Delivery</button>
                 </form>
             </div>
@@ -366,7 +366,7 @@
                         style="background:#f1f5f9;color:#475569;border:1px solid var(--color-border);">
                     Go Back
                 </button>
-                <form action="/spendilizer/order/${order.id}/cancel" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/order/${order.id}/cancel" method="post" style="margin:0;">
                     <button type="submit" class="btn-action-lg btn-cancel-lg">Yes, Cancel Order</button>
                 </form>
             </div>

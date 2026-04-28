@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty order.id ? 'New Order' : 'Edit Order'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -38,9 +38,9 @@ function buildProductSelect(selectedId, rowIdx) {
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/order">Orders</a>
+                <a href="${pageContext.request.contextPath}/order">Orders</a>
                 <span class="sep">›</span>
                 <span class="current">${empty order.id ? 'New Order' : 'Edit Order'}</span>
             </div>
@@ -56,7 +56,7 @@ function buildProductSelect(selectedId, rowIdx) {
                 <div class="flash-error" style="margin-left:40px;margin-right:8px;margin-bottom:16px;">${errorMessage}</div>
             </c:if>
 
-            <form action="/spendilizer/order/${empty order.id ? 'new' : 'edit/'.concat(order.id)}" method="post" id="orderForm">
+            <form action="${pageContext.request.contextPath}/order/${empty order.id ? 'new' : 'edit/'.concat(order.id)}" method="post" id="orderForm">
 
                 <%-- Header card --%>
                 <div class="form-card">
@@ -219,7 +219,7 @@ function buildProductSelect(selectedId, rowIdx) {
                         </svg>
                         ${empty order.id ? 'Create Order' : 'Save Changes'}
                     </button>
-                    <a href="/spendilizer/order" class="btn-cancel">Cancel</a>
+                    <a href="${pageContext.request.contextPath}/order" class="btn-cancel">Cancel</a>
                 </div>
 
             </form>
@@ -227,7 +227,7 @@ function buildProductSelect(selectedId, rowIdx) {
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-order-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-order-form.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

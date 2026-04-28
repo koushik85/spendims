@@ -45,7 +45,6 @@ public class SecurityConfig {
                         .requestMatchers(PUBLIC_URLS).permitAll()
                         .requestMatchers("/api/**").permitAll()
                         .requestMatchers("/enterprise/**").hasRole("ENTERPRISE_OWNER")
-                        .requestMatchers("/student/**").hasRole("STUDENT")
                         .requestMatchers("/admin/**").hasRole("SUPER_ADMIN")
                         .requestMatchers("/category/**").hasRole("SUPER_ADMIN")
                         .anyRequest().authenticated()

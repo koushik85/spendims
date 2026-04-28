@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty movement.id ? 'Record Movement' : 'Edit Movement'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -18,9 +18,9 @@
 
             <%-- Breadcrumb --%>
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/stock-movement">Stock Movements</a>
+                <a href="${pageContext.request.contextPath}/stock-movement">Stock Movements</a>
                 <span class="sep">›</span>
                 <span class="current">${empty movement.id ? 'Record Movement' : 'Edit Movement'}</span>
             </div>
@@ -82,7 +82,7 @@
                 </div>
                 <div class="form-card-body">
 
-                    <form action="/spendilizer/stock-movement/${empty movement.id ? 'new' : 'edit/'.concat(movement.id)}"
+                    <form action="${pageContext.request.contextPath}/stock-movement/${empty movement.id ? 'new' : 'edit/'.concat(movement.id)}"
                           method="post">
 
                         <%-- ══ ADD MODE ONLY fields ══ --%>
@@ -174,7 +174,7 @@
                                 </svg>
                                 ${empty movement.id ? 'Record Movement' : 'Save Note'}
                             </button>
-                            <a href="/spendilizer/stock-movement" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/stock-movement" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>
@@ -185,6 +185,6 @@
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-stock-movement-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-stock-movement-form.js"></script>
 </body>
 </html>

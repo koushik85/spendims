@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty supplier.id ? 'Add Supplier' : 'Edit Supplier'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -17,9 +17,9 @@
 
             <%-- Breadcrumb --%>
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/supplier">Suppliers</a>
+                <a href="${pageContext.request.contextPath}/supplier">Suppliers</a>
                 <span class="sep">›</span>
                 <span class="current">${empty supplier.id ? 'New Supplier' : 'Edit Supplier'}</span>
             </div>
@@ -54,7 +54,7 @@
                 <div class="form-card-header">Supplier Details</div>
                 <div class="form-card-body">
 
-                    <form action="/spendilizer/supplier/${empty supplier.id ? 'new' : 'edit/'.concat(supplier.id)}"
+                    <form action="${pageContext.request.contextPath}/supplier/${empty supplier.id ? 'new' : 'edit/'.concat(supplier.id)}"
                           method="post">
 
                         <%-- Name + Email (side by side) --%>
@@ -117,7 +117,7 @@
                                 </svg>
                                 ${empty supplier.id ? 'Create Supplier' : 'Save Changes'}
                             </button>
-                            <a href="/spendilizer/supplier" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/supplier" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>

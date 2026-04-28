@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty category.id ? 'Add Category' : 'Edit Category'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -17,9 +17,9 @@
 
             <%-- Breadcrumb --%>
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/category">Categories</a>
+                <a href="${pageContext.request.contextPath}/category">Categories</a>
                 <span class="sep">›</span>
                 <span class="current">${empty category.id ? 'New Category' : 'Edit Category'}</span>
             </div>
@@ -64,7 +64,7 @@
                 <div class="form-card-header">Category Details</div>
                 <div class="form-card-body">
 
-                    <form action="/spendilizer/category/${empty category.id ? 'new' : 'edit/'.concat(category.id)}"
+                    <form action="${pageContext.request.contextPath}/category/${empty category.id ? 'new' : 'edit/'.concat(category.id)}"
                           method="post">
 
                         <div class="form-group">
@@ -99,7 +99,7 @@
                                 </svg>
                                 ${empty category.id ? 'Create Category' : 'Save Changes'}
                             </button>
-                            <a href="/spendilizer/category" class="btn-cancel">
+                            <a href="${pageContext.request.contextPath}/category" class="btn-cancel">
                                 Cancel
                             </a>
                         </div>

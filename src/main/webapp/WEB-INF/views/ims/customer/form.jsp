@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty customer.id ? 'Add Customer' : 'Edit Customer'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -15,9 +15,9 @@
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/customer">Customers</a>
+                <a href="${pageContext.request.contextPath}/customer">Customers</a>
                 <span class="sep">›</span>
                 <span class="current">${empty customer.id ? 'New Customer' : 'Edit Customer'}</span>
             </div>
@@ -44,7 +44,7 @@
             <div class="form-card">
                 <div class="form-card-header">Customer Details</div>
                 <div class="form-card-body">
-                    <form action="/spendilizer/customer/${empty customer.id ? 'new' : 'edit/'.concat(customer.id)}" method="post">
+                    <form action="${pageContext.request.contextPath}/customer/${empty customer.id ? 'new' : 'edit/'.concat(customer.id)}" method="post">
 
                         <div class="form-row">
                             <div class="form-group">
@@ -119,7 +119,7 @@
                                 </svg>
                                 ${empty customer.id ? 'Create Customer' : 'Save Changes'}
                             </button>
-                            <a href="/spendilizer/customer" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/customer" class="btn-cancel">Cancel</a>
                         </div>
                     </form>
                 </div>

@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Team Members — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -79,7 +79,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <form action="/spendilizer/enterprise/members/remove/${m.userId}" method="post"
+                                    <form action="${pageContext.request.contextPath}/enterprise/members/remove/${m.userId}" method="post"
                                           onsubmit="return confirm('Remove ${m.firstName} from your team?')" style="margin:0;">
                                         <button type="submit" class="btn-action btn-delete">
                                             <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
@@ -129,7 +129,7 @@
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form action="/spendilizer/enterprise/members/add" method="post">
+            <form action="${pageContext.request.contextPath}/enterprise/members/add" method="post">
                 <div class="modal-body" style="padding:20px 24px;">
                     <p style="font-size:0.83rem;color:#64748b;margin-bottom:18px;">
                         The new member will be able to log in with the credentials you set below.

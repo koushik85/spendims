@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty product.id ? 'Add Product' : 'Edit Product'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -17,9 +17,9 @@
 
             <%-- Breadcrumb --%>
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/product">Products</a>
+                <a href="${pageContext.request.contextPath}/product">Products</a>
                 <span class="sep">›</span>
                 <span class="current">${empty product.id ? 'New Product' : 'Edit Product'}</span>
             </div>
@@ -63,7 +63,7 @@
                 <div class="form-card-header">Product Details</div>
                 <div class="form-card-body">
 
-                    <form action="/spendilizer/product/${empty product.id ? 'new' : 'edit/'.concat(product.id)}"
+                    <form action="${pageContext.request.contextPath}/product/${empty product.id ? 'new' : 'edit/'.concat(product.id)}"
                           method="post">
 
                         <c:if test="${empty product.id}">
@@ -88,9 +88,9 @@
                                     <div class="field-hint">Users can create products only from the master list. Select one to auto-fill details and set store pricing.</div>
                                     <div class="field-hint" style="margin-top: 8px;">
                                         Product not listed?
-                                        <a href="/spendilizer/product/request-master">Request Add to Master List</a>
+                                        <a href="${pageContext.request.contextPath}/product/request-master">Request Add to Master List</a>
                                         ·
-                                        <a href="/spendilizer/product/my-requests">View My Requests</a>
+                                        <a href="${pageContext.request.contextPath}/product/my-requests">View My Requests</a>
                                     </div>
                                     <c:if test="${empty masterProducts}">
                                         <div class="alert alert-warning" style="margin-top: 10px; margin-bottom: 0;">
@@ -255,7 +255,7 @@
                                     </select>
                                 </div>
                                 <c:if test="${empty suppliers}">
-                                    <div class="field-hint">No suppliers found. <a href="/spendilizer/supplier/new">Add a supplier first</a>.</div>
+                                    <div class="field-hint">No suppliers found. <a href="${pageContext.request.contextPath}/supplier/new">Add a supplier first</a>.</div>
                                 </c:if>
                             </div>
 
@@ -270,7 +270,7 @@
                                 </svg>
                                 ${empty product.id ? 'Create Product From Master' : 'Save Changes'}
                             </button>
-                            <a href="/spendilizer/product" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/product" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>
@@ -281,6 +281,6 @@
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-product-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-product-form.js"></script>
 </body>
 </html>

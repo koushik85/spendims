@@ -14,7 +14,7 @@
         if (keyword.length < 2) { hsnSuggestions.innerHTML = ''; return; }
 
         debounceTimer = setTimeout(() => {
-            fetch('/spendilizer/api/hsn/search?keyword=' + encodeURIComponent(keyword))
+            fetch(ctx + '/api/hsn/search?keyword=' + encodeURIComponent(keyword))
                 .then(res => { if (!res.ok) throw new Error('Network error'); return res.json(); })
                 .then(data => {
                     hsnSuggestions.innerHTML = '';
@@ -157,7 +157,7 @@
         const normalizedProductName = (productName || '').trim();
         if (!normalizedCategory || !normalizedProductName || normalizedProductName.length < 2) return;
 
-        fetch('/spendilizer/product/generate-sku'
+        fetch(ctx + '/product/generate-sku'
             + '?categoryName=' + encodeURIComponent(normalizedCategory)
             + '&productName='  + encodeURIComponent(normalizedProductName))
             .then(res => res.text())

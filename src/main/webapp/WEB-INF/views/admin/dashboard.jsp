@@ -1,13 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard — Spendilizer</title>
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -47,7 +47,7 @@
                         </div>
                         <div class="stat-label">Pending Enterprises</div>
                         <div class="stat-value">${pendingEnterprises.size()}</div>
-                        <div class="stat-hint"><a href="/spendilizer/admin/enterprises" style="color:inherit;">Review &rarr;</a></div>
+                        <div class="stat-hint"><a href="${pageContext.request.contextPath}/admin/enterprises" style="color:inherit;">Review &rarr;</a></div>
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -59,7 +59,7 @@
                         </div>
                         <div class="stat-label">Pending Requests</div>
                         <div class="stat-value">${pendingProductRequests.size()}</div>
-                        <div class="stat-hint"><a href="/spendilizer/admin/master-products/requests" style="color:inherit;">Review &rarr;</a></div>
+                        <div class="stat-hint"><a href="${pageContext.request.contextPath}/admin/master-products/requests" style="color:inherit;">Review &rarr;</a></div>
                     </div>
                 </div>
             </div>
@@ -85,10 +85,10 @@
                                     <td>${e.owner.email}</td>
                                     <td>
                                         <div class="flex-gap-6">
-                                            <form method="post" action="/spendilizer/admin/enterprises/${e.enterpriseId}/approve">
+                                            <form method="post" action="${pageContext.request.contextPath}/admin/enterprises/${e.enterpriseId}/approve">
                                                 <button class="btn-action btn-adjust-plus">Approve</button>
                                             </form>
-                                            <form method="post" action="/spendilizer/admin/enterprises/${e.enterpriseId}/reject">
+                                            <form method="post" action="${pageContext.request.contextPath}/admin/enterprises/${e.enterpriseId}/reject">
                                                 <button class="btn-action btn-delete">Reject</button>
                                             </form>
                                         </div>
@@ -121,10 +121,10 @@
                                     <td>${r.requestedBy.firstName} ${r.requestedBy.lastName}</td>
                                     <td>
                                         <div class="flex-gap-6">
-                                            <form method="post" action="/spendilizer/admin/master-products/requests/${r.id}/approve">
+                                            <form method="post" action="${pageContext.request.contextPath}/admin/master-products/requests/${r.id}/approve">
                                                 <button class="btn-action btn-adjust-plus">Approve</button>
                                             </form>
-                                            <a href="/spendilizer/admin/master-products/requests" class="btn-action btn-delete">Reject</a>
+                                            <a href="${pageContext.request.contextPath}/admin/master-products/requests" class="btn-action btn-delete">Reject</a>
                                         </div>
                                     </td>
                                 </tr>

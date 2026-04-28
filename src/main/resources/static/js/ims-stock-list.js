@@ -1,6 +1,6 @@
 // ── Stock list — restock modal ────────────────────────────────────────────
 function openRestock(stockId, productName) {
-    document.getElementById('restockForm').action = '/spendilizer/stock/adjust/' + stockId;
+    document.getElementById('restockForm').action = ctx + '/stock/adjust/' + stockId;
     document.getElementById('restockProductName').textContent = productName;
     document.getElementById('restockDelta').value = '';
     const modal = document.getElementById('restockModal');

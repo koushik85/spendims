@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${group.name} — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
     <style>
         .balance-row { display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--color-border); }
         .balance-row:last-child { border-bottom:none; }
@@ -40,7 +40,7 @@
 <div class="main-content">
 
     <div class="breadcrumb-bar">
-        <a href="/spendilizer/personal/splits">Split Groups</a>
+        <a href="${pageContext.request.contextPath}/personal/splits">Split Groups</a>
         <span class="sep">/</span>
         <span class="current"><c:out value="${group.name}"/></span>
     </div>
@@ -86,14 +86,14 @@
                 <%-- Only creator can add members and close the group --%>
                 <c:if test="${isCreator}">
                     <button class="btn-secondary-custom" onclick="openModal('addMemberModal')">+ Member</button>
-                    <form action="/spendilizer/personal/splits/${group.id}/close" method="post" style="margin:0;">
+                    <form action="${pageContext.request.contextPath}/personal/splits/${group.id}/close" method="post" style="margin:0;">
                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                         <button type="submit" class="btn-secondary-custom" onclick="return confirm('Close this group?')">Close Group</button>
                     </form>
                 </c:if>
             </c:if>
             <c:if test="${isCreator}">
-                <form action="/spendilizer/personal/splits/${group.id}/delete" method="post" style="margin:0;">
+                <form action="${pageContext.request.contextPath}/personal/splits/${group.id}/delete" method="post" style="margin:0;">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                     <button type="submit" class="btn-secondary-custom" style="color:var(--color-danger);border-color:var(--color-danger);"
                             onclick="return confirm('Delete this group and all its data?')">Delete</button>
@@ -151,7 +151,7 @@
                                 <div style="text-align:right;flex-shrink:0;margin-left:16px;">
                                     <div style="font-family:monospace;font-weight:700;font-size:0.95rem;">&#8377;<fmt:formatNumber value="${exp.amount}" pattern="#,##0.00"/></div>
                                     <c:if test="${group.status == 'ACTIVE'}">
-                                        <form action="/spendilizer/personal/splits/${group.id}/expense/${exp.id}/delete" method="post" style="margin:4px 0 0 0;">
+                                        <form action="${pageContext.request.contextPath}/personal/splits/${group.id}/expense/${exp.id}/delete" method="post" style="margin:4px 0 0 0;">
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                                             <button type="submit" style="background:none;border:none;color:var(--color-danger);font-size:0.72rem;cursor:pointer;padding:0;"
                                                     onclick="return confirm('Delete this expense?')">Remove</button>
@@ -270,7 +270,7 @@
         <p style="font-size:0.8rem;color:var(--color-text-muted);margin:0 0 16px;">
             Adding as <strong>${myMember.name}</strong> (you)
         </p>
-        <form action="/spendilizer/personal/splits/${group.id}/add-expense" method="post">
+        <form action="${pageContext.request.contextPath}/personal/splits/${group.id}/add-expense" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 
             <div class="form-group">
@@ -323,7 +323,7 @@
 <div class="modal-overlay" id="addMemberModal">
     <div class="modal-box">
         <div class="modal-title">Add Member</div>
-        <form action="/spendilizer/personal/splits/${group.id}/add-member" method="post">
+        <form action="${pageContext.request.contextPath}/personal/splits/${group.id}/add-member" method="post">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <div class="form-group">
                 <label>Name <span class="required">*</span></label>

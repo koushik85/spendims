@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Personal Finance — Spendilizer</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -90,7 +90,7 @@
                     <div class="activity-card">
                         <div class="activity-header">
                             <span>Recent split groups</span>
-                            <a href="/spendilizer/personal/splits">View all &rarr;</a>
+                            <a href="${pageContext.request.contextPath}/personal/splits">View all &rarr;</a>
                         </div>
                         <c:choose>
                             <c:when test="${empty recentGroups}">
@@ -98,7 +98,7 @@
                                     <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     </svg>
-                                    <p>No groups yet. <a href="/spendilizer/personal/splits/new">Create one &rarr;</a></p>
+                                    <p>No groups yet. <a href="${pageContext.request.contextPath}/personal/splits/new">Create one &rarr;</a></p>
                                 </div>
                             </c:when>
                             <c:otherwise>
@@ -107,7 +107,7 @@
                                     <tbody>
                                         <c:forEach var="g" items="${recentGroups}">
                                             <tr>
-                                                <td><a href="/spendilizer/personal/splits/${g.id}" style="color:var(--color-primary);text-decoration:none;font-weight:500;"><c:out value="${g.name}"/></a></td>
+                                                <td><a href="${pageContext.request.contextPath}/personal/splits/${g.id}" style="color:var(--color-primary);text-decoration:none;font-weight:500;"><c:out value="${g.name}"/></a></td>
                                                 <td class="date-cell">${g.eventDate != null ? g.eventDate : '—'}</td>
                                                 <td>
                                                     <c:choose>
@@ -129,7 +129,7 @@
                     <div class="activity-card">
                         <div class="activity-header">
                             <span>Upcoming renewals (7 days)</span>
-                            <a href="/spendilizer/personal/subscriptions">View all &rarr;</a>
+                            <a href="${pageContext.request.contextPath}/personal/subscriptions">View all &rarr;</a>
                         </div>
                         <c:choose>
                             <c:when test="${empty upcomingRenewals}">

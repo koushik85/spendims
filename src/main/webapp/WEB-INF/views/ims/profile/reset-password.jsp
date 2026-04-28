@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Reset Password — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}v/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -16,7 +16,7 @@
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
                 <span class="current">Reset Password</span>
             </div>
@@ -53,7 +53,7 @@
             <div class="form-card">
                 <div class="form-card-header">Change Password</div>
                 <div class="form-card-body">
-                    <form action="/spendilizer/profile/reset-password" method="post" id="pwForm">
+                    <form action="${pageContext.request.contextPath}/profile/reset-password" method="post" id="pwForm">
 
                         <div class="form-group">
                             <label for="currentPassword">Current Password <span class="required">*</span></label>
@@ -105,7 +105,7 @@
                                 </svg>
                                 Change Password
                             </button>
-                            <a href="/spendilizer/dashboard" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/dashboard" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>
@@ -129,7 +129,7 @@
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/spendilizer/js/ims-shared.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
 <script>
 document.getElementById('confirmPassword').addEventListener('input', function () {
     const match = this.value === document.getElementById('newPassword').value;

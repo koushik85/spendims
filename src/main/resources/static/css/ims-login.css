@@ -1,6 +1,6 @@
 /* ============================================================
    IMS — Login Page Stylesheet
-   Usage: <link rel="stylesheet" href="/spendilizer/css/ims-login.css">
+   Usage: <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-login.css">
    Standalone — does NOT depend on ims-shared.css
    ============================================================ */
 

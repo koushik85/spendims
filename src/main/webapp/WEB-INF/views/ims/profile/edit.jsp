@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Edit Profile — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/spendilizer/css/ims-shared.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -16,7 +16,7 @@
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
                 <span class="current">Edit Profile</span>
             </div>
@@ -53,7 +53,7 @@
             <div class="form-card">
                 <div class="form-card-header">Personal Details</div>
                 <div class="form-card-body">
-                    <form action="/spendilizer/profile/edit" method="post">
+                    <form action="${pageContext.request.contextPath}/profile/edit" method="post">
 
                         <div class="form-row">
                             <div class="form-group">
@@ -109,7 +109,7 @@
                                 </svg>
                                 Save Changes
                             </button>
-                            <a href="/spendilizer/dashboard" class="btn-cancel">Cancel</a>
+                            <a href="${pageContext.request.contextPath}/dashboard" class="btn-cancel">Cancel</a>
                         </div>
 
                     </form>

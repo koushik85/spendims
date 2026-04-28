@@ -1,12 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>${empty invoice.id ? 'New Invoice' : 'Edit Invoice'} — IMS</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/spendilizer/css/ims-shared.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/ims-shared.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../../navbar.jsp" %>
@@ -38,9 +38,9 @@ function buildProductSelect(selectedId, rowIdx) {
         <div class="main-content">
 
             <div class="breadcrumb-bar">
-                <a href="/spendilizer/dashboard">Dashboard</a>
+                <a href="${pageContext.request.contextPath}/dashboard">Dashboard</a>
                 <span class="sep">›</span>
-                <a href="/spendilizer/invoice">Invoices</a>
+                <a href="${pageContext.request.contextPath}/invoice">Invoices</a>
                 <span class="sep">›</span>
                 <span class="current">${empty invoice.id ? 'New Invoice' : 'Edit Invoice'}</span>
             </div>
@@ -56,7 +56,7 @@ function buildProductSelect(selectedId, rowIdx) {
                 <div class="flash-error" style="margin-left:40px;margin-right:8px;margin-bottom:16px;">${errorMessage}</div>
             </c:if>
 
-            <form action="/spendilizer/invoice/${empty invoice.id ? 'new' : 'edit/'.concat(invoice.id)}" method="post" id="invoiceForm">
+            <form action="${pageContext.request.contextPath}/invoice/${empty invoice.id ? 'new' : 'edit/'.concat(invoice.id)}" method="post" id="invoiceForm">
 
                 <div class="form-card">
                     <div class="form-card-header">Invoice Details</div>
@@ -295,14 +295,14 @@ function buildProductSelect(selectedId, rowIdx) {
                         </svg>
                         ${empty invoice.id ? 'Create Invoice' : 'Save Changes'}
                     </button>
-                    <a href="/spendilizer/invoice" class="btn-cancel">Cancel</a>
+                    <a href="${pageContext.request.contextPath}/invoice" class="btn-cancel">Cancel</a>
                 </div>
             </form>
         </div>
     </div>
 </div>
 
-<script src="/spendilizer/js/ims-invoice-form.js"></script>
+<script src="${pageContext.request.contextPath}/js/ims-invoice-form.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
