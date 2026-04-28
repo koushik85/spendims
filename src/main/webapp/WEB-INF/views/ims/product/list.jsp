@@ -6,10 +6,7 @@
 <html>
 <head>
 <title>Products — IMS</title>
-<jsp:include
-	page="${pageContext.request.contextPath}/include/styling.jsp" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/ims-shared.css">
+<jsp:include page="/WEB-INF/views/include/styling.jsp" />
 </head>
 <body>
 	<%@ include file="../../navbar.jsp"%>

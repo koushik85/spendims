@@ -5,10 +5,7 @@
 <html>
 <head>
 <title>Reset Password — IMS</title>
-<jsp:include
-	page="${pageContext.request.contextPath}/include/styling.jsp" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}v/css/ims-shared.css">
+<jsp:include page="/WEB-INF/views/include/styling.jsp" />
 </head>
 <body>
 	<%@ include file="../../navbar.jsp"%>

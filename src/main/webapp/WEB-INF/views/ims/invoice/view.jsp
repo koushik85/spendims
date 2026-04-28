@@ -6,10 +6,7 @@
 <html>
 <head>
 <title>Invoice ${invoice.invoiceNumber} — IMS</title>
-<jsp:include
-	page="${pageContext.request.contextPath}/include/styling.jsp" />
-<link href="${pageContext.request.contextPath}/css/ims-shared.css"
-	rel="stylesheet">
+<jsp:include page="/WEB-INF/views/include/styling.jsp" />
 <style>
 /* ── Print invoice layout ── */
 .print-invoice {

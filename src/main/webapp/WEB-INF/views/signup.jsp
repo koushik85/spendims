@@ -5,7 +5,7 @@
 <html>
 <head>
 <title>Spendilizer - Sign Up</title>
-<jsp:include page="${pageContext.request.contextPath}/include/styling.jsp" />
+<jsp:include page="/WEB-INF/views/include/styling.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/ims-login.css">
 <style>

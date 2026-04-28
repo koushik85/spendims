@@ -9,10 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${masterProduct.id == null ? 'New' : 'Edit'}Master
 	Product — Admin</title>
-<jsp:include
-	page="${pageContext.request.contextPath}/include/styling.jsp" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/ims-shared.css">
+<jsp:include page="/WEB-INF/views/include/styling.jsp" />
 </head>
 <body>
 
