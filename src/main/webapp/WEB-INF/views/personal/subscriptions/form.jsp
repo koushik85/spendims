@@ -6,11 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${editMode ? 'Edit' : 'Add'}Subscription — Spendilizer</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
+<title>${editMode ? 'Edit' : 'Add'}Subscription—Spendilizer</title>
+<jsp:include
+	page="${pageContext.request.contextPath}/include/styling.jsp" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
 
@@ -21,8 +21,8 @@
 			<div class="main-content">
 
 				<div class="breadcrumb-bar">
-					<a href="${pageContext.request.contextPath}/personal/subscriptions">Subscriptions</a> <span
-						class="sep">›</span> <span class="current">${editMode ? 'Edit' : 'Add'}</span>
+					<a href="${pageContext.request.contextPath}/personal/subscriptions">Subscriptions</a>
+					<span class="sep">›</span> <span class="current">${editMode ? 'Edit' : 'Add'}</span>
 				</div>
 
 				<div class="page-header">

@@ -3,7 +3,6 @@
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
 
-
 <div id="sidebar-wrapper">
 
 	<div class="sidebar-brand">

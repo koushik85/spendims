@@ -8,6 +8,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Product Requests — Admin</title>
+<jsp:include
+	page="${pageContext.request.contextPath}/include/styling.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>

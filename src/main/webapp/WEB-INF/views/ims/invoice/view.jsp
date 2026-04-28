@@ -6,9 +6,8 @@
 <html>
 <head>
 <title>Invoice ${invoice.invoiceNumber} — IMS</title>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-	rel="stylesheet">
+<jsp:include
+	page="${pageContext.request.contextPath}/include/styling.jsp" />
 <link href="${pageContext.request.contextPath}/css/ims-shared.css"
 	rel="stylesheet">
 <style>
@@ -664,7 +663,8 @@
 					<button type="button" class="btn-action-lg" data-bs-dismiss="modal"
 						style="background: #f1f5f9; color: #475569; border: 1px solid var(--color-border);">
 						Go Back</button>
-					<form action="${pageContext.request.contextPath}/invoice/${invoice.id}/send"
+					<form
+						action="${pageContext.request.contextPath}/invoice/${invoice.id}/send"
 						method="post" style="margin: 0;">
 						<button type="submit" class="btn-action-lg btn-send">Confirm
 							— Mark Sent</button>
@@ -709,8 +709,9 @@
 					<button type="button" class="btn-action-lg" data-bs-dismiss="modal"
 						style="background: #f1f5f9; color: #475569; border: 1px solid var(--color-border);">
 						Go Back</button>
-					<form action="${pageContext.request.contextPath}/invoice/${invoice.id}/pay" method="post"
-						style="margin: 0;">
+					<form
+						action="${pageContext.request.contextPath}/invoice/${invoice.id}/pay"
+						method="post" style="margin: 0;">
 						<button type="submit" class="btn-action-lg btn-pay">Confirm
 							Payment</button>
 					</form>
@@ -754,7 +755,8 @@
 					<button type="button" class="btn-action-lg" data-bs-dismiss="modal"
 						style="background: #f1f5f9; color: #475569; border: 1px solid var(--color-border);">
 						Go Back</button>
-					<form action="${pageContext.request.contextPath}/invoice/${invoice.id}/cancel"
+					<form
+						action="${pageContext.request.contextPath}/invoice/${invoice.id}/cancel"
 						method="post" style="margin: 0;">
 						<button type="submit" class="btn-action-lg btn-cancel-lg">Yes,
 							Cancel Invoice</button>
@@ -764,7 +766,5 @@
 		</div>
 	</div>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

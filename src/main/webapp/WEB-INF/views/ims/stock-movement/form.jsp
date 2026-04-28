@@ -5,7 +5,7 @@
 <html>
 <head>
     <title>${empty movement.id ? 'Record Movement' : 'Edit Movement'} — IMS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <jsp:include page="${pageContext.request.contextPath}/include/styling.jsp" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ims-shared.css">
 </head>
 <body>
