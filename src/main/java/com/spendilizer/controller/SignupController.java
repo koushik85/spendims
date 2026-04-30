@@ -65,13 +65,9 @@ public class SignupController {
 
         try {
             if ("ENTERPRISE".equals(accountType)) {
-                if (enterpriseName == null || enterpriseName.trim().isEmpty()) {
-                    logger.warn("SIGNUP_REJECTED reason=missing_enterprise_name accountType={} email={}", accountType, email);
-                    model.addAttribute("error", "Company name is required for enterprise accounts.");
-                    model.addAttribute("activeTab", accountType);
-                    return "signup";
-                }
-                userService.registerEnterpriseOwner(email, firstName, lastName, password, enterpriseName.trim(), pan);
+                String companyName = (enterpriseName != null && !enterpriseName.isBlank())
+                        ? enterpriseName : firstName + "'s Enterprise";
+                userService.registerPremiumUser(email, firstName, lastName, password, pan, companyName);
             } else {
                 userService.registerIndividualUser(email, firstName, lastName, password, pan);
             }
@@ -80,9 +76,7 @@ public class SignupController {
             return "redirect:/login?registered=true";
         } catch (Exception exception) {
             logger.error("SIGNUP_FAILED accountType={} email={} reason={}",
-                    accountType,
-                    email,
-                    exception.getClass().getSimpleName());
+                    accountType, email, exception.getClass().getSimpleName());
             model.addAttribute("error", "Signup failed. Please try again.");
             model.addAttribute("activeTab", accountType);
             return "signup";

@@ -36,7 +36,7 @@ public class PersonalDashboardController {
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal CustomUserDetails principal,
                             HttpSession session, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         session.setAttribute("currentModule", "PERSONAL");
 
         List<SplitGroup> groups = splitGroupService.getAllGroups(user);

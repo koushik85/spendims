@@ -20,7 +20,7 @@
 
             <div class="page-header">
                 <div>
-                    <h2><span class="greeting">Hi, ${user.firstName}</span><span class="page-title-main">Admin Dashboard</span></h2>
+                    <h2><span class="greeting">Hi, ${user.userBasicDetails.userFirstName}</span><span class="page-title-main">Admin Dashboard</span></h2>
                     <div class="page-subtitle">Platform overview and pending approvals</div>
                 </div>
             </div>
@@ -81,8 +81,8 @@
                             <c:forEach var="e" items="${pendingEnterprises}">
                                 <tr>
                                     <td>${e.enterpriseName}</td>
-                                    <td>${e.owner.firstName} ${e.owner.lastName}</td>
-                                    <td>${e.owner.email}</td>
+                                    <td>${e.owner.userBasicDetails.userFirstName} ${e.owner.userBasicDetails.userLastName}</td>
+                                    <td>${e.owner.userEmail}</td>
                                     <td>
                                         <div class="flex-gap-6">
                                             <form method="post" action="${pageContext.request.contextPath}/admin/enterprises/${e.enterpriseId}/approve">
@@ -118,7 +118,7 @@
                                 <tr>
                                     <td>${r.name}</td>
                                     <td><span class="text-muted" style="font-family:monospace;font-size:0.8rem;">${r.sku}</span></td>
-                                    <td>${r.requestedBy.firstName} ${r.requestedBy.lastName}</td>
+                                    <td>${r.requestedBy.userBasicDetails.userFirstName} ${r.requestedBy.userBasicDetails.userLastName}</td>
                                     <td>
                                         <div class="flex-gap-6">
                                             <form method="post" action="${pageContext.request.contextPath}/admin/master-products/requests/${r.id}/approve">

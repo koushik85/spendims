@@ -64,9 +64,9 @@
 									</td>
 									<td><span class="category-pill">${r.categoryName}</span></td>
 									<td>
-										<div style="font-weight: 500;">${r.requestedBy.firstName}
-											${r.requestedBy.lastName}</div>
-										<div class="text-muted" style="font-size: 0.78rem;">${r.requestedBy.email}</div>
+										<div style="font-weight: 500;">${r.requestedBy.userBasicDetails.userFirstName}
+											${r.requestedBy.userBasicDetails.userLastName}</div>
+										<div class="text-muted" style="font-size: 0.78rem;">${r.requestedBy.userEmail}</div>
 									</td>
 									<td class="text-muted"
 										style="font-size: 0.8rem; white-space: nowrap;">${r.requestedAt}</td>

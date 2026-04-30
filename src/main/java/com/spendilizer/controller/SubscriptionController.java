@@ -26,7 +26,7 @@ public class SubscriptionController {
     @GetMapping
     public String list(@AuthenticationPrincipal CustomUserDetails principal,
                        HttpSession session, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         session.setAttribute("currentModule", "PERSONAL");
         model.addAttribute("subscriptions", subscriptionService.getAll(user));
         model.addAttribute("monthlyCost", subscriptionService.totalMonthlyCost(user));
@@ -51,7 +51,7 @@ public class SubscriptionController {
     public String create(@ModelAttribute Subscription subscription,
                          @AuthenticationPrincipal CustomUserDetails principal,
                          RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.save(subscription, user);
         ra.addFlashAttribute("success", "Subscription \"" + subscription.getName() + "\" added.");
         return "redirect:/personal/subscriptions";
@@ -61,7 +61,7 @@ public class SubscriptionController {
     public String editForm(@PathVariable Long id,
                            @AuthenticationPrincipal CustomUserDetails principal,
                            HttpSession session, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         session.setAttribute("currentModule", "PERSONAL");
         Subscription sub = subscriptionService.getById(id, user)
                 .orElseThrow(() -> new RuntimeException("Subscription not found"));
@@ -78,7 +78,7 @@ public class SubscriptionController {
                          @ModelAttribute Subscription subscription,
                          @AuthenticationPrincipal CustomUserDetails principal,
                          RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.update(id, subscription, user);
         ra.addFlashAttribute("success", "Subscription updated.");
         return "redirect:/personal/subscriptions";
@@ -89,7 +89,7 @@ public class SubscriptionController {
                             @RequestParam SubscriptionStatus status,
                             @AuthenticationPrincipal CustomUserDetails principal,
                             RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.setStatus(id, status, user);
         ra.addFlashAttribute("success", "Status updated.");
         return "redirect:/personal/subscriptions";
@@ -99,7 +99,7 @@ public class SubscriptionController {
     public String delete(@PathVariable Long id,
                          @AuthenticationPrincipal CustomUserDetails principal,
                          RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.delete(id, user);
         ra.addFlashAttribute("success", "Subscription deleted.");
         return "redirect:/personal/subscriptions";
@@ -110,14 +110,14 @@ public class SubscriptionController {
     @PostMapping("/notifications/{notifId}/remove")
     public String removeNotification(@PathVariable Long notifId,
                                      @AuthenticationPrincipal CustomUserDetails principal) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.removeNotification(notifId, user);
         return "redirect:/personal/subscriptions";
     }
 
     @PostMapping("/notifications/dismiss-all")
     public String dismissAll(@AuthenticationPrincipal CustomUserDetails principal) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.removeAllNotifications(user);
         return "redirect:/personal/subscriptions";
     }

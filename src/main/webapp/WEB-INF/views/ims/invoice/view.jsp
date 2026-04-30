@@ -449,21 +449,13 @@
 				<div>
 					<div class="inv-title">INVOICE</div>
 					<div class="inv-seller">
-						<c:choose>
-							<c:when test="${not empty invoice.createdBy.enterprise}">
-								<strong>${invoice.createdBy.enterprise.enterpriseName}</strong>
-								<br>
-							</c:when>
-							<c:otherwise>
-								<strong>${invoice.createdBy.firstName}
-									${invoice.createdBy.lastName}</strong>
-								<br>
-							</c:otherwise>
-						</c:choose>
-						<c:if test="${not empty invoice.createdBy.pan}">
-                        PAN: ${invoice.createdBy.pan}<br>
+						<strong>${invoice.createdBy.userBasicDetails.userFirstName}
+								${invoice.createdBy.userBasicDetails.userLastName}</strong>
+							<br>
+						<c:if test="${not empty invoice.createdBy.userBasicDetails.pan}">
+                        PAN: ${invoice.createdBy.userBasicDetails.pan}<br>
 						</c:if>
-						${invoice.createdBy.email}
+						${invoice.createdBy.userEmail}
 					</div>
 				</div>
 				<div class="inv-meta">
@@ -608,15 +600,8 @@
 				<div class="sig">
 					<div class="line"></div>
 					<div style="font-weight: 600;">Authorised Signatory</div>
-					<c:choose>
-						<c:when test="${not empty invoice.createdBy.enterprise}">
-							<div style="color: #64748b;">${invoice.createdBy.enterprise.enterpriseName}</div>
-						</c:when>
-						<c:otherwise>
-							<div style="color: #64748b;">${invoice.createdBy.firstName}
-								${invoice.createdBy.lastName}</div>
-						</c:otherwise>
-					</c:choose>
+					<div style="color: #64748b;">${invoice.createdBy.userBasicDetails.userFirstName}
+							${invoice.createdBy.userBasicDetails.userLastName}</div>
 				</div>
 			</div>
 

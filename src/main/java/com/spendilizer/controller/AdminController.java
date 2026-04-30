@@ -82,7 +82,7 @@ public class AdminController {
                                  Model model,
                                  RedirectAttributes ra) {
         try {
-            User admin = userService.getUserByEmail(principal.getUsername());
+            User admin = userService.getUserByUserEmail(principal.getUsername());
             categoryService.adminCreateCategory(category, admin);
             ra.addFlashAttribute("successMessage", "Category created.");
             return "redirect:/admin/categories";

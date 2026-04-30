@@ -1,124 +1,82 @@
 package com.spendilizer.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private int userId;
+    private Long userId;
 
-    @Column(name = "user_email", length = 50)
-    private String email;
+    @Column(name = "user_unique_id", unique = true, nullable = false)
+    private String userUniqueId;
 
-    @Column(name = "user_first_name", length = 50)
-    private String firstName;
+    @Column(name = "customer_id", unique = true, nullable = false)
+    private Long customerId;
 
-    @Column(name = "user_last_name", length = 50)
-    private String lastName;
+    @Column(name = "user_email")
+    private String userEmail;
 
-    @Column(name = "user_password", length = 100)
-    private String password;
+    @Column(name = "user_password")
+    private String userPassword;
 
-    @Column(name = "account_type", length = 20)
-    private String accountType;
+    @Column(name = "user_creation_date_time")
+    private LocalDateTime userCreationDateTime;
 
-    @Column(name = "pan", length = 10)
-    private String pan;
+    @Column(name = "user_modification_date_time")
+    private LocalDateTime userModificationDateTime;
 
-    @Column(name = "customer_id", length = 9, unique = true)
-    private String customerId;
+    @Column(name = "user_last_login")
+    private LocalDateTime userLastLogin;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "enterprise_id", nullable = true)
-    private Enterprise enterprise;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_status")
+    private UserStatusEnum userStatus;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JsonManagedReference
-    private List<UserRolesMapping> rolesMapping;
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private UserBasicDetails userBasicDetails;
 
     public User() {}
 
-    public User(String email, String firstName, String lastName, String password) {
-        this.email = email;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.password = password;
-    }
+    public Long getUserId() { return userId; }
+    public void setUserId(Long userId) { this.userId = userId; }
 
-    public String getAccountType() { return accountType; }
-    public void setAccountType(String accountType) { this.accountType = accountType; }
+    public String getUserUniqueId() { return userUniqueId; }
+    public void setUserUniqueId(String userUniqueId) { this.userUniqueId = userUniqueId; }
 
-    public String getPan() { return pan; }
-    public void setPan(String pan) { this.pan = pan; }
+    public Long getCustomerId() { return customerId; }
+    public void setCustomerId(Long customerId) { this.customerId = customerId; }
 
-    public String getCustomerId() { return customerId; }
-    public void setCustomerId(String customerId) { this.customerId = customerId; }
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
-    public Enterprise getEnterprise() { return enterprise; }
-    public void setEnterprise(Enterprise enterprise) { this.enterprise = enterprise; }
+    public String getUserPassword() { return userPassword; }
+    public void setUserPassword(String userPassword) { this.userPassword = userPassword; }
 
-    public int getUserId() {
-        return userId;
-    }
+    public LocalDateTime getUserCreationDateTime() { return userCreationDateTime; }
+    public void setUserCreationDateTime(LocalDateTime userCreationDateTime) { this.userCreationDateTime = userCreationDateTime; }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
+    public LocalDateTime getUserModificationDateTime() { return userModificationDateTime; }
+    public void setUserModificationDateTime(LocalDateTime userModificationDateTime) { this.userModificationDateTime = userModificationDateTime; }
 
-    public String getEmail() {
-        return email;
-    }
+    public LocalDateTime getUserLastLogin() { return userLastLogin; }
+    public void setUserLastLogin(LocalDateTime userLastLogin) { this.userLastLogin = userLastLogin; }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    public UserStatusEnum getUserStatus() { return userStatus; }
+    public void setUserStatus(UserStatusEnum userStatus) { this.userStatus = userStatus; }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public List<UserRolesMapping> getRolesMapping() {
-        return rolesMapping;
-    }
-
-    public void setRolesMapping(List<UserRolesMapping> rolesMapping) {
-        this.rolesMapping = rolesMapping;
-    }
+    public UserBasicDetails getUserBasicDetails() { return userBasicDetails; }
+    public void setUserBasicDetails(UserBasicDetails userBasicDetails) { this.userBasicDetails = userBasicDetails; }
 
     @Override
     public String toString() {
         return "User{" +
                 "userId=" + userId +
-                ", email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

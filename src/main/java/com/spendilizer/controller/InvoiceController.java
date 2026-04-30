@@ -243,6 +243,6 @@ public class InvoiceController {
     }
 
     private User resolveUser(CustomUserDetails principal) {
-        return userService.getUserByEmail(principal.getUsername());
+        return userService.getUserByUserEmail(principal.getUsername());
     }
 }

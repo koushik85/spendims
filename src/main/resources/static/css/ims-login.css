@@ -28,6 +28,8 @@ body {
     display:     flex;
     background:  var(--color-bg);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size:   16px;
+    line-height: 1.5;
     color:       var(--color-text);
     -webkit-font-smoothing: antialiased;
 }
@@ -201,11 +203,12 @@ body {
 }
 .input-wrap input {
     width:         100%;
-    padding:       10px 40px 10px 38px;   /* right pad leaves room for toggle btn */
+    padding:       10px 44px 10px 44px;   /* 44px left clears the 15px icon at left:12px */
     border:        1px solid var(--color-border);
     border-radius: 8px;
     font-size:     0.86rem;
     font-family:   inherit;
+    line-height:   1.5;
     color:         var(--color-text);
     background:    var(--color-surface);
     outline:       none;
