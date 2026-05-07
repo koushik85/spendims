@@ -141,14 +141,7 @@ public class ProductService {
      * feature was added.
      */
     private String resolveCustomerId(User user) {
-        User accountHolder = user;
-        if ("ENTERPRISE_MEMBER".equals(user.getAccountType()) && user.getEnterprise() != null) {
-            accountHolder = user.getEnterprise().getOwner();
-        }
-        if (accountHolder.getCustomerId() == null) {
-            return userService.generateAndPersistCustomerId(accountHolder);
-        }
-        return accountHolder.getCustomerId();
+        return user.getCustomerId() != null ? user.getCustomerId().toString() : "";
     }
 
     private String buildPrefix(String input) {

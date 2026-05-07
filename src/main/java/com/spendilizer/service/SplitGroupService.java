@@ -79,9 +79,11 @@ public class SplitGroupService {
         SplitGroup saved = splitGroupRepository.save(group);
 
         // Always add the creator as first member
+        String creatorFirstName = creator.getUserBasicDetails() != null ? creator.getUserBasicDetails().getUserFirstName() : "";
+        String creatorLastName = creator.getUserBasicDetails() != null ? creator.getUserBasicDetails().getUserLastName() : "";
         GroupMember creatorMember = new GroupMember(saved,
-                creator.getFirstName() + " " + creator.getLastName(),
-                creator.getEmail(), creator);
+                (creatorFirstName + " " + creatorLastName).trim(),
+                creator.getUserEmail(), creator);
         groupMemberRepository.save(creatorMember);
 
         // Add other members
@@ -92,7 +94,7 @@ public class SplitGroupService {
                     ? memberEmails.get(i).trim() : null;
             // Link to registered user if email matches
             User linked = (mEmail != null && !mEmail.isBlank())
-                    ? userRepository.findByEmail(mEmail) : null;
+                    ? userRepository.findByUserEmail(mEmail) : null;
             groupMemberRepository.save(new GroupMember(saved, mName,
                     mEmail != null && !mEmail.isBlank() ? mEmail : null, linked));
         }
@@ -107,7 +109,7 @@ public class SplitGroupService {
             throw new IllegalStateException("Only the group creator can add members.");
         }
         String trimEmail = (email != null && !email.isBlank()) ? email.trim() : null;
-        User linked = trimEmail != null ? userRepository.findByEmail(trimEmail) : null;
+        User linked = trimEmail != null ? userRepository.findByUserEmail(trimEmail) : null;
         GroupMember newMember = groupMemberRepository.save(
                 new GroupMember(group, name.trim(), trimEmail, linked));
 

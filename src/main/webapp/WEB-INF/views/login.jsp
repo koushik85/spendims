@@ -5,10 +5,8 @@
 <html>
 <head>
 <title>Spendilizer - Login</title>
-<jsp:include page="include/styling.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/css/ims-login.css">
-<script src="${pageContext.request.contextPath}/js/ims-shared.js"></script>
 </head>
 <body>
 

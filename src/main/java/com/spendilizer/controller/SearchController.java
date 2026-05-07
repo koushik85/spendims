@@ -42,7 +42,7 @@ public class SearchController {
 			return Collections.emptyList();
 
 		String ctx = request.getContextPath();
-		User user = userService.getUserByEmail(principal.getUsername());
+		User user = userService.getUserByUserEmail(principal.getUsername());
 		List<User> scope = userService.getScopeUsers(user);
 		List<Map<String, String>> results = new ArrayList<>();
 

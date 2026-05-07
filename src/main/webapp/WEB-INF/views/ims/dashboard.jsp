@@ -27,7 +27,7 @@
 				<div class="page-header flex">
 					<div>
 						<h2>
-							<span class="greeting">Hi, ${user.firstName}</span> <span
+							<span class="greeting">Hi, ${user.userBasicDetails.userFirstName}</span> <span
 								class="page-title-main">Dashboard</span>
 						</h2>
 						<div class="page-subtitle">Here's what's happening with your

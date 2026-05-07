@@ -38,12 +38,12 @@ public class ProfileController {
         User currentUser = resolveUser(principal);
         try {
             userService.updateProfile(currentUser.getUserId(), firstName, lastName, pan);
-            logger.info("PROFILE_UPDATE_SUCCESS userId={} email={}", currentUser.getUserId(), currentUser.getEmail());
+            logger.info("PROFILE_UPDATE_SUCCESS userId={} email={}", currentUser.getUserId(), currentUser.getUserEmail());
             ra.addFlashAttribute("successMessage", "Profile updated successfully.");
         } catch (Exception e) {
             logger.warn("PROFILE_UPDATE_FAILED userId={} email={} reason={}",
                     currentUser.getUserId(),
-                    currentUser.getEmail(),
+                    currentUser.getUserEmail(),
                     e.getClass().getSimpleName());
             ra.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -65,25 +65,25 @@ public class ProfileController {
         if (!newPassword.equals(confirmPassword)) {
             logger.warn("PASSWORD_CHANGE_REJECTED reason=mismatch userId={} email={}",
                     currentUser.getUserId(),
-                    currentUser.getEmail());
+                    currentUser.getUserEmail());
             ra.addFlashAttribute("errorMessage", "New passwords do not match.");
             return "redirect:/profile/reset-password";
         }
         if (newPassword.length() < 8) {
             logger.warn("PASSWORD_CHANGE_REJECTED reason=weak_password userId={} email={}",
                     currentUser.getUserId(),
-                    currentUser.getEmail());
+                    currentUser.getUserEmail());
             ra.addFlashAttribute("errorMessage", "New password must be at least 8 characters.");
             return "redirect:/profile/reset-password";
         }
         try {
             userService.changePassword(currentUser.getUserId(), currentPassword, newPassword);
-            logger.info("PASSWORD_CHANGE_SUCCESS userId={} email={}", currentUser.getUserId(), currentUser.getEmail());
+            logger.info("PASSWORD_CHANGE_SUCCESS userId={} email={}", currentUser.getUserId(), currentUser.getUserEmail());
             ra.addFlashAttribute("successMessage", "Password changed successfully.");
         } catch (IllegalArgumentException e) {
             logger.warn("PASSWORD_CHANGE_FAILED userId={} email={} reason={}",
                     currentUser.getUserId(),
-                    currentUser.getEmail(),
+                    currentUser.getUserEmail(),
                     e.getClass().getSimpleName());
             ra.addFlashAttribute("errorMessage", e.getMessage());
         }
@@ -91,6 +91,6 @@ public class ProfileController {
     }
 
     private User resolveUser(CustomUserDetails principal) {
-        return userService.getUserByEmail(principal.getUsername());
+        return userService.getUserByUserEmail(principal.getUsername());
     }
 }

@@ -58,18 +58,18 @@
                             <div class="form-group">
                                 <label for="firstName">First Name <span class="required">*</span></label>
                                 <input type="text" id="firstName" name="firstName"
-                                       value="${profileUser.firstName}" required autofocus>
+                                       value="${profileUser.userBasicDetails.userFirstName}" required autofocus>
                             </div>
                             <div class="form-group">
                                 <label for="lastName">Last Name</label>
                                 <input type="text" id="lastName" name="lastName"
-                                       value="${profileUser.lastName}">
+                                       value="${profileUser.userBasicDetails.userLastName}">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label>Email</label>
-                            <input type="email" value="${profileUser.email}" disabled>
+                            <input type="email" value="${profileUser.userEmail}" disabled>
                             <div class="field-hint">Email cannot be changed.</div>
                         </div>
 
@@ -83,21 +83,11 @@
                         <div class="form-group">
                             <label for="pan">PAN <span class="optional">optional</span></label>
                             <input type="text" id="pan" name="pan"
-                                   value="${profileUser.pan}"
+                                   value="${profileUser.userBasicDetails.pan}"
                                    placeholder="e.g. ABCDE1234F"
                                    maxlength="10"
                                    style="text-transform:uppercase;">
                         </div>
-
-                        <c:if test="${profileUser.accountType == 'ENTERPRISE_OWNER' or profileUser.accountType == 'ENTERPRISE_MEMBER'}">
-                            <div class="form-group">
-                                <label>Enterprise</label>
-                                <input type="text" value="${profileUser.enterprise.enterpriseName}" disabled>
-                                <div class="field-hint">
-                                    ${profileUser.accountType == 'ENTERPRISE_OWNER' ? 'You are the owner of this enterprise.' : 'You are a member of this enterprise.'}
-                                </div>
-                            </div>
-                        </c:if>
 
                         <div class="form-divider"></div>
 

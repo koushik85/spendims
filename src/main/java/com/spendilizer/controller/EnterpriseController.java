@@ -24,7 +24,7 @@ public class EnterpriseController {
 
     @GetMapping("/members")
     public String listMembers(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
-        User owner = userService.getUserByEmail(principal.getUsername());
+        User owner = userService.getUserByUserEmail(principal.getUsername());
         Enterprise enterprise = userService.getEnterpriseByOwner(owner);
         List<User> members = userService.getMembersByEnterprise(enterprise);
         model.addAttribute("enterprise", enterprise);
@@ -39,7 +39,7 @@ public class EnterpriseController {
                             @RequestParam("lastName") String lastName,
                             @RequestParam("password") String password,
                             RedirectAttributes redirectAttributes) {
-        User owner = userService.getUserByEmail(principal.getUsername());
+        User owner = userService.getUserByUserEmail(principal.getUsername());
         Enterprise enterprise = userService.getEnterpriseByOwner(owner);
 
         if (userService.emailExists(email)) {
@@ -54,7 +54,7 @@ public class EnterpriseController {
     }
 
     @PostMapping("/members/remove/{userId}")
-    public String removeMember(@PathVariable int userId, RedirectAttributes redirectAttributes) {
+    public String removeMember(@PathVariable Long userId, RedirectAttributes redirectAttributes) {
         userService.removeEnterpriseMember(userId);
         redirectAttributes.addFlashAttribute("successMessage", "Team member removed");
         return "redirect:/enterprise/members";

@@ -40,7 +40,7 @@ public class SplitGroupController {
     @GetMapping
     public String list(@AuthenticationPrincipal CustomUserDetails principal,
                        HttpSession session, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         session.setAttribute("currentModule", "PERSONAL");
         model.addAttribute("groups", splitGroupService.getAllGroups(user));
         return "personal/splits/list";
@@ -60,7 +60,7 @@ public class SplitGroupController {
                          @RequestParam(required = false) List<String> memberEmail,
                          @AuthenticationPrincipal CustomUserDetails principal,
                          RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         LocalDate date = (eventDate != null && !eventDate.isBlank())
                 ? LocalDate.parse(eventDate) : null;
         SplitGroup group = splitGroupService.createGroup(name, description, date,
@@ -73,7 +73,7 @@ public class SplitGroupController {
     public String view(@PathVariable Long id,
                        @AuthenticationPrincipal CustomUserDetails principal,
                        HttpSession session, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         session.setAttribute("currentModule", "PERSONAL");
         SplitGroup group = splitGroupService.getGroupById(id, user)
                 .orElseThrow(() -> new RuntimeException("Group not found"));
@@ -102,7 +102,7 @@ public class SplitGroupController {
                             @RequestParam(required = false) String email,
                             @AuthenticationPrincipal CustomUserDetails principal,
                             RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         try {
             splitGroupService.addMember(id, name, email, user);
             ra.addFlashAttribute("success", "Member \"" + name + "\" added.");
@@ -121,7 +121,7 @@ public class SplitGroupController {
                              @RequestParam Map<String, String> allParams,
                              @AuthenticationPrincipal CustomUserDetails principal,
                              RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         LocalDate date = (expenseDate != null && !expenseDate.isBlank())
                 ? LocalDate.parse(expenseDate) : LocalDate.now();
 
@@ -152,7 +152,7 @@ public class SplitGroupController {
                                 @PathVariable Long expenseId,
                                 @AuthenticationPrincipal CustomUserDetails principal,
                                 RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         try {
             splitGroupService.deleteExpense(expenseId, groupId, user);
             ra.addFlashAttribute("success", "Expense removed.");
@@ -166,7 +166,7 @@ public class SplitGroupController {
     public String closeGroup(@PathVariable Long id,
                              @AuthenticationPrincipal CustomUserDetails principal,
                              RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         try {
             splitGroupService.closeGroup(id, user);
             ra.addFlashAttribute("success", "Group closed.");
@@ -180,7 +180,7 @@ public class SplitGroupController {
     public String deleteGroup(@PathVariable Long id,
                               @AuthenticationPrincipal CustomUserDetails principal,
                               RedirectAttributes ra) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         try {
             splitGroupService.deleteGroup(id, user);
             ra.addFlashAttribute("success", "Group deleted.");

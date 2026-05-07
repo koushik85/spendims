@@ -55,9 +55,11 @@ public class InvoicePdfService {
                     .append("</tr>");
         }
 
-        String sellerName = invoice.getCreatedBy() != null && invoice.getCreatedBy().getEnterprise() != null
-                ? invoice.getCreatedBy().getEnterprise().getEnterpriseName()
-                : invoice.getCreatedBy() != null ? (defaultText(invoice.getCreatedBy().getFirstName()) + " " + defaultText(invoice.getCreatedBy().getLastName())).trim() : "Seller";
+        String sellerName = "Seller";
+        if (invoice.getCreatedBy() != null && invoice.getCreatedBy().getUserBasicDetails() != null) {
+            sellerName = (defaultText(invoice.getCreatedBy().getUserBasicDetails().getUserFirstName())
+                    + " " + defaultText(invoice.getCreatedBy().getUserBasicDetails().getUserLastName())).trim();
+        }
 
         return "<!DOCTYPE html>"
             + "<html xmlns='http://www.w3.org/1999/xhtml'><head><meta charset='UTF-8' /><style>"
@@ -84,7 +86,7 @@ public class InvoicePdfService {
                 + "</style></head><body>"
                 + "<div class='header'>"
                 + "<div><div class='title'>INVOICE</div><div class='seller'><strong>" + escape(sellerName) + "</strong><br/>"
-                + escape(invoice.getCreatedBy() != null ? defaultText(invoice.getCreatedBy().getEmail()) : "")
+                + escape(invoice.getCreatedBy() != null ? defaultText(invoice.getCreatedBy().getUserEmail()) : "")
                 + "</div></div>"
                 + "<div class='meta'>"
                 + "<div class='number'>" + escape(defaultText(invoice.getInvoiceNumber())) + "</div>"

@@ -56,8 +56,8 @@
 							<c:forEach var="e" items="${enterprises}">
 								<tr>
 									<td>${e.enterpriseName}</td>
-									<td>${e.owner.firstName}${e.owner.lastName}</td>
-									<td>${e.owner.email}</td>
+									<td>${e.owner.userBasicDetails.userFirstName} ${e.owner.userBasicDetails.userLastName}</td>
+									<td>${e.owner.userEmail}</td>
 									<td><c:choose>
 											<c:when test="${e.approvalStatus == 'PENDING'}">
 												<span class="badge-pending">Pending</span>

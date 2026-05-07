@@ -26,7 +26,7 @@ public class NotificationApiController {
     @PostMapping("/mark-seen")
     public ResponseEntity<Map<String, Object>> markSeen(
             @AuthenticationPrincipal CustomUserDetails principal) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.markAllNotificationsSeen(user);
         return ResponseEntity.ok(Map.of(
                 "newCount", 0L,
@@ -39,7 +39,7 @@ public class NotificationApiController {
     public ResponseEntity<Map<String, Object>> remove(
             @PathVariable Long id,
             @AuthenticationPrincipal CustomUserDetails principal) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
         subscriptionService.removeNotification(id, user);
         return ResponseEntity.ok(Map.of(
                 "newCount", subscriptionService.getNewNotificationCount(user),

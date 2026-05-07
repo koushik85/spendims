@@ -32,7 +32,7 @@ public class GlobalModelAttribute {
             return null;
         }
         String email = auth.getName();
-        return email != null ? userService.getUserByEmail(email) : null;
+        return email != null ? userService.getUserByUserEmail(email) : null;
     }
 
     @ModelAttribute
@@ -57,7 +57,7 @@ public class GlobalModelAttribute {
             return;
         }
         try {
-            User user = userService.getUserByEmail(auth.getName());
+            User user = userService.getUserByUserEmail(auth.getName());
             if (user != null) {
                 model.addAttribute("navNotifications", subscriptionService.getActiveNotifications(user));
                 model.addAttribute("newNotificationCount", subscriptionService.getNewNotificationCount(user));

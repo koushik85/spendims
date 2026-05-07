@@ -1,27 +1,24 @@
 package com.spendilizer.service;
 
-import com.spendilizer.entity.ApprovalStatus;
-import com.spendilizer.entity.Enterprise;
-import com.spendilizer.entity.GroupMember;
-import com.spendilizer.entity.Roles;
-import com.spendilizer.entity.User;
-import com.spendilizer.entity.UserRolesMapping;
-import com.spendilizer.repository.EnterpriseRepository;
-import com.spendilizer.repository.GroupMemberRepository;
-import com.spendilizer.repository.RolesRepository;
-import com.spendilizer.repository.UserRepository;
-import com.spendilizer.repository.UserRolesMappingRepository;
+import com.spendilizer.entity.*;
+import com.spendilizer.repository.*;
+
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserBasicDetailsRepository userBasicDetailsRepository;
     private final EnterpriseRepository enterpriseRepository;
     private final RolesRepository rolesRepository;
     private final UserRolesMappingRepository userRolesMappingRepository;
@@ -29,12 +26,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository,
+                       UserBasicDetailsRepository userBasicDetailsRepository,
                        EnterpriseRepository enterpriseRepository,
                        RolesRepository rolesRepository,
                        UserRolesMappingRepository userRolesMappingRepository,
                        GroupMemberRepository groupMemberRepository,
                        PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.userBasicDetailsRepository = userBasicDetailsRepository;
         this.enterpriseRepository = enterpriseRepository;
         this.rolesRepository = rolesRepository;
         this.userRolesMappingRepository = userRolesMappingRepository;
@@ -42,41 +41,24 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User getUserByUserEmail(String email) {
+        return userRepository.findByUserEmail(email);
     }
 
     public boolean emailExists(String email) {
-        return userRepository.findByEmail(email) != null;
-    }
-
-    /**
-     * Returns all users whose data the given user is allowed to see.
-     * - Individual  → just themselves
-     * - Enterprise  → every user sharing the same enterprise (owner + all members)
-     */
-    public List<User> getScopeUsers(User user) {
-        if ("SUPER_ADMIN".equals(user.getAccountType())) {
-            return userRepository.findAll();
-        }
-        if (user.getEnterprise() == null) {
-            return List.of(user);
-        }
-        return userRepository.findByEnterprise(user.getEnterprise());
-    }
-
-    @Transactional
-    public void registerSuperAdmin(String email, String firstName, String lastName, String rawPassword) {
-        User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
-        user.setAccountType("SUPER_ADMIN");
-        user.setCustomerId(freshCustomerId());
-        User saved = userRepository.save(user);
-        assignRole(saved, "SUPER_ADMIN");
+        return userRepository.findByUserEmail(email) != null;
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
+
+    /** Returns the set of users whose data the given user may access. */
+    public List<User> getScopeUsers(User user) {
+        return List.of(user);
+    }
+
+    // ── Enterprise admin methods ─────────────────────────────────────────────
 
     public List<Enterprise> getPendingEnterprises() {
         return enterpriseRepository.findAllByApprovalStatus(ApprovalStatus.PENDING);
@@ -102,59 +84,70 @@ public class UserService {
         });
     }
 
-    @Transactional
-    public void registerIndividualUser(String email, String firstName, String lastName,
-                                       String rawPassword, String pan) {
-        User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
-        user.setAccountType("INDIVIDUAL");
-        if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
-        user.setCustomerId(freshCustomerId());
-        User saved = userRepository.save(user);
-        assignRole(saved, "USER");
-        linkPendingGroupMembers(saved);
+    public Enterprise getEnterpriseByOwner(User owner) {
+        return enterpriseRepository.findByOwner(owner);
     }
 
-    @Transactional
-    public void registerEnterpriseOwner(String email, String firstName, String lastName,
-                                        String rawPassword, String enterpriseName, String pan) {
-        User user = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
-        user.setAccountType("ENTERPRISE_OWNER");
-        if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
-        user.setCustomerId(freshCustomerId());
-        User savedUser = userRepository.save(user);
-
-        Enterprise enterprise = new Enterprise(enterpriseName, savedUser);
-        enterprise.setApprovalStatus(ApprovalStatus.PENDING);
-        Enterprise savedEnterprise = enterpriseRepository.save(enterprise);
-
-        savedUser.setEnterprise(savedEnterprise);
-        userRepository.save(savedUser);
-
-        assignRole(savedUser, "ENTERPRISE_OWNER");
-        linkPendingGroupMembers(savedUser);
+    /** Enterprise member management — to be rearchitected with the new User model. */
+    public List<User> getMembersByEnterprise(Enterprise enterprise) {
+        return Collections.emptyList();
     }
 
     @Transactional
     public void addEnterpriseMember(Enterprise enterprise, String email, String firstName,
                                     String lastName, String rawPassword) {
-        User member = new User(email, firstName, lastName, passwordEncoder.encode(rawPassword));
-        member.setAccountType("ENTERPRISE_MEMBER");
-        member.setEnterprise(enterprise);
-        member.setCustomerId(freshCustomerId());
-        User saved = userRepository.save(member);
-        assignRole(saved, "ENTERPRISE_MEMBER");
+        User user = buildUser(email, rawPassword);
+        User saved = userRepository.save(user);
+
+        UserBasicDetails details = buildBasicDetails(saved, firstName, lastName, null);
+        userBasicDetailsRepository.save(details);
+
+        assignRole(saved, "PREMIUM_USER");
         linkPendingGroupMembers(saved);
+    }
+
+    @Transactional
+    public void removeEnterpriseMember(Long userId) {
+        userRepository.findById(userId).ifPresent(userRepository::delete);
+    }
+
+    @Transactional
+    public void registerIndividualUser(String email, String firstName, String lastName,
+                                       String rawPassword, String pan) {
+        User user = buildUser(email, rawPassword);
+        User saved = userRepository.save(user);
+
+        UserBasicDetails details = buildBasicDetails(saved, firstName, lastName, pan);
+        userBasicDetailsRepository.save(details);
+
+        assignRole(saved, "USER");
+        linkPendingGroupMembers(saved);
+    }
+
+    @Transactional
+    public void registerPremiumUser(String email, String firstName, String lastName,
+                                    String rawPassword, String pan, String enterpriseName) {
+        User user = buildUser(email, rawPassword);
+        User saved = userRepository.save(user);
+
+        UserBasicDetails details = buildBasicDetails(saved, firstName, lastName, pan);
+        userBasicDetailsRepository.save(details);
+
+        assignRole(saved, "PREMIUM_USER");
+        linkPendingGroupMembers(saved);
+
+        Enterprise enterprise = new Enterprise(enterpriseName, saved);
+        enterprise.setApprovalStatus(ApprovalStatus.PENDING);
+        enterpriseRepository.save(enterprise);
     }
 
     /**
      * Links any unlinked GroupMember slots whose email matches this user's email.
-     * Called after every registration path so a user is immediately connected to
-     * groups they were added to before they signed up.
      */
     private void linkPendingGroupMembers(User user) {
-        if (user.getEmail() == null) return;
+        if (user.getUserEmail() == null) return;
         List<GroupMember> pending = groupMemberRepository
-                .findByEmailAndLinkedUserIsNull(user.getEmail());
+                .findByEmailAndLinkedUserIsNull(user.getUserEmail());
         for (GroupMember member : pending) {
             member.setLinkedUser(user);
             groupMemberRepository.save(member);
@@ -162,56 +155,61 @@ public class UserService {
     }
 
     @Transactional
-    public void removeEnterpriseMember(int userId) {
-        userRepository.findById(userId).ifPresent(userRepository::delete);
-    }
-
-    public List<User> getMembersByEnterprise(Enterprise enterprise) {
-        return userRepository.findByEnterpriseAndAccountType(enterprise, "ENTERPRISE_MEMBER");
-    }
-
-    public Enterprise getEnterpriseByOwner(User owner) {
-        return enterpriseRepository.findByOwner(owner);
-    }
-
-    @Transactional
-    public void updateProfile(int userId, String firstName, String lastName, String pan) {
+    public void updateProfile(Long userId, String firstName, String lastName, String pan) {
         userRepository.findById(userId).ifPresent(user -> {
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            if (pan != null && !pan.isBlank()) user.setPan(pan.toUpperCase());
-            else user.setPan(null);
+            user.setUserModificationDateTime(LocalDateTime.now());
             userRepository.save(user);
+
+            UserBasicDetails details = userBasicDetailsRepository.findByUser_UserId(userId);
+            if (details == null) {
+                details = new UserBasicDetails();
+                details.setUser(user);
+            }
+            details.setUserFirstName(firstName);
+            details.setUserLastName(lastName);
+            details.setPan(pan != null && !pan.isBlank() ? pan.toUpperCase() : null);
+            userBasicDetailsRepository.save(details);
         });
     }
 
     @Transactional
-    public void changePassword(int userId, String currentRaw, String newRaw) {
+    public void changePassword(Long userId, String currentRaw, String newRaw) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!passwordEncoder.matches(currentRaw, user.getPassword())) {
+        if (!passwordEncoder.matches(currentRaw, user.getUserPassword())) {
             throw new IllegalArgumentException("Current password is incorrect.");
         }
-        user.setPassword(passwordEncoder.encode(newRaw));
+        user.setUserPassword(passwordEncoder.encode(newRaw));
+        user.setUserModificationDateTime(LocalDateTime.now());
         userRepository.save(user);
     }
 
-    /** Generates a unique 9-digit customer ID and persists it on the user. */
-    @Transactional
-    public String generateAndPersistCustomerId(User user) {
-        String id;
-        do {
-            id = String.valueOf(ThreadLocalRandom.current().nextLong(100_000_000L, 1_000_000_000L));
-        } while (userRepository.existsByCustomerId(id));
-        user.setCustomerId(id);
-        userRepository.save(user);
-        return id;
+    private User buildUser(String email, String rawPassword) {
+        User user = new User();
+        user.setUserEmail(email);
+        user.setUserPassword(passwordEncoder.encode(rawPassword));
+        user.setUserStatus(UserStatusEnum.ACTIVE);
+        user.setUserUniqueId(UUID.randomUUID().toString());
+        user.setCustomerId(freshCustomerId());
+        user.setUserCreationDateTime(LocalDateTime.now());
+        return user;
     }
 
-    private String freshCustomerId() {
-        String id;
+    private UserBasicDetails buildBasicDetails(User saved, String firstName, String lastName, String pan) {
+        UserBasicDetails details = new UserBasicDetails();
+        details.setUser(saved);
+        details.setUserFirstName(firstName);
+        details.setUserLastName(lastName);
+        if (pan != null && !pan.isBlank()) {
+            details.setPan(pan.toUpperCase());
+        }
+        return details;
+    }
+
+    private Long freshCustomerId() {
+        Long id;
         do {
-            id = String.valueOf(ThreadLocalRandom.current().nextLong(100_000_000L, 1_000_000_000L));
+            id = ThreadLocalRandom.current().nextLong(100_000_000L, 1_000_000_000L);
         } while (userRepository.existsByCustomerId(id));
         return id;
     }

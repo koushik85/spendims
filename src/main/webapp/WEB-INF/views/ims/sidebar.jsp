@@ -2,6 +2,7 @@
 	language="java"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c"%>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn"%>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec"%>
 
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
 <c:set var="uri" value="${pageContext.request.requestURI}" />
@@ -76,9 +77,8 @@
         </svg> Invoices
 	</a>
 
-	<%-- Enterprise section: only visible to enterprise owners --%>
-	<c:if
-		test="${not empty user && user.accountType == 'ENTERPRISE_OWNER'}">
+	<%-- Enterprise section: only visible to premium users --%>
+	<sec:authorize access="hasRole('PREMIUM_USER')">
 		<div class="sidebar-section-label">Enterprise</div>
 		<a href="${ctx}/enterprise/members"
 			class="nav-link ${fn:contains(uri, '/enterprise') ? 'active' : ''}">
@@ -88,7 +88,7 @@
 					d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg> Team Members
 		</a>
-	</c:if>
+	</sec:authorize>
 
 	<div class="sidebar-footer">&copy; 2025 Spendilizer</div>
 </div>

@@ -46,7 +46,7 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String dashboard(@AuthenticationPrincipal CustomUserDetails principal, Model model) {
-        User user = userService.getUserByEmail(principal.getUsername());
+        User user = userService.getUserByUserEmail(principal.getUsername());
 
         long productCount = productService.getAllProducts(user).stream()
                 .filter(p -> p.getRowStatus() != null && p.getRowStatus().name().equals("ACTIVE"))
